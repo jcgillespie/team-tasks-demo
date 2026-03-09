@@ -1,0 +1,20 @@
+# .NET artifacts
+**/bin/
+**/obj/
+
+# Node artifacts
+**/node_modules/
+**/dist/
+
+# Logs and temp files
+*.log
+.DS_Store
+
+# Local databases
+*.db
+*.db-shm
+*.db-wal
+
+# IDE and test output
+.vscode/
+coverage/

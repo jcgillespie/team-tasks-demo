@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/server/">
+    <Project Path="server/TeamTasks.Api/TeamTasks.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TeamTasks.Api.Tests/TeamTasks.Api.Tests.csproj" />
+  </Folder>
+</Solution>
