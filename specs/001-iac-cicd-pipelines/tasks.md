@@ -28,6 +28,8 @@
 - [ ] T006 [P] Create the shared release helper shell library in `scripts/release/common.sh` and `scripts/release/smoke-test.sh`
 - [ ] T007 [P] Create shared OpenTofu provider, version, variable, and local definitions in `infra/opentofu/providers.tf`, `infra/opentofu/versions.tf`, `infra/opentofu/variables.tf`, and `infra/opentofu/locals.tf`
 - [ ] T008 Create the GitHub Environment, OIDC, and branch-protection setup runbook in `docs/operations/environment-setup.md` and `docs/operations/pull-request-governance.md`
+- [ ] T037 [P] Create a pull request evidence template in `.github/pull_request_template.md` that requires test execution evidence, constitution compliance confirmation, and UX verification notes for UI-facing changes
+- [ ] T038 Update constitution compliance and pull request evidence guidance in `specs/001-iac-cicd-pipelines/checklists/requirements.md` and `docs/operations/pull-request-governance.md`
 
 **Checkpoint**: Shared delivery tooling, workflow test harness, and environment conventions are ready.
 
@@ -43,12 +45,15 @@
 
 - [ ] T009 [P] [US1] Create failing environment-root validation tests in `tests/delivery/src/infra/environment-roots.spec.ts`
 - [ ] T010 [P] [US1] Create failing infrastructure workflow contract tests in `tests/delivery/src/infra/infra-workflows.spec.ts`
+- [ ] T039 [P] [US1] Create failing hosted-runtime configuration tests covering Azure SQL provider selection, App Service configuration binding, and missing-secret failure paths in `tests/TeamTasks.Api.Tests/HostedConfigurationTests.cs`
 
 ### Implementation for User Story 1
 
 - [ ] T011 [P] [US1] Implement the shared naming and tagging module in `infra/opentofu/modules/platform_baseline/main.tf`, `infra/opentofu/modules/platform_baseline/variables.tf`, and `infra/opentofu/modules/platform_baseline/outputs.tf`
 - [ ] T012 [P] [US1] Implement the App Service and monitoring module in `infra/opentofu/modules/app_service_stack/main.tf`, `infra/opentofu/modules/app_service_stack/variables.tf`, and `infra/opentofu/modules/app_service_stack/outputs.tf`
 - [ ] T013 [P] [US1] Implement the data and secret management module in `infra/opentofu/modules/data_protection/main.tf`, `infra/opentofu/modules/data_protection/variables.tf`, and `infra/opentofu/modules/data_protection/outputs.tf`
+- [ ] T040 [US1] Add environment-aware database provider selection for local SQLite and hosted Azure SQL in `server/TeamTasks.Api/Program.cs`, `server/TeamTasks.Api/Data/AppDbContext.cs`, and `server/TeamTasks.Api/TeamTasks.Api.csproj`
+- [ ] T041 [US1] Add managed configuration and Key Vault-backed setting handling for hosted deployments in `server/TeamTasks.Api/Program.cs`, `server/TeamTasks.Api/appsettings.json`, and `server/TeamTasks.Api/appsettings.Development.json`
 - [ ] T014 [US1] Compose the dev environment root and backend configuration in `infra/opentofu/environments/dev/main.tf`, `infra/opentofu/environments/dev/variables.tf`, `infra/opentofu/environments/dev/outputs.tf`, `infra/opentofu/environments/dev/backend.hcl`, and `infra/opentofu/environments/dev/dev.tfvars`
 - [ ] T015 [US1] Compose the staging environment root and backend configuration in `infra/opentofu/environments/staging/main.tf`, `infra/opentofu/environments/staging/variables.tf`, `infra/opentofu/environments/staging/outputs.tf`, `infra/opentofu/environments/staging/backend.hcl`, and `infra/opentofu/environments/staging/staging.tfvars`
 - [ ] T016 [US1] Compose the prod environment root and backend configuration in `infra/opentofu/environments/prod/main.tf`, `infra/opentofu/environments/prod/variables.tf`, `infra/opentofu/environments/prod/outputs.tf`, `infra/opentofu/environments/prod/backend.hcl`, and `infra/opentofu/environments/prod/prod.tfvars`
@@ -113,6 +118,8 @@
 - [ ] T034 [P] Validate quickstart and operator onboarding flow in `specs/001-iac-cicd-pipelines/quickstart.md` and `docs/operations/README.md`
 - [ ] T035 Harden artifact retention, workflow permissions, and cleanup behavior in `.github/workflows/release.yml` and `.github/workflows/infra-apply.yml`
 - [ ] T036 Run the full validation command matrix and capture operator notes in `docs/operations/README.md` and `README.md`
+- [ ] T042 [P] Document secret rotation, secret-reference refresh behavior, and post-rotation validation in `docs/operations/secret-rotation.md` and `specs/001-iac-cicd-pipelines/quickstart.md`
+- [ ] T043 Add a delivery validation task for rotated secret recovery across hosted API configuration and release workflows in `docs/operations/secret-rotation.md` and `docs/operations/deployment.md`
 
 ---
 
@@ -124,7 +131,7 @@
 - **Phase 2: Foundational**: Depends on Phase 1 and blocks all user stories.
 - **Phase 3: User Story 1**: Depends on Phase 2.
 - **Phase 4: User Story 2**: Depends on Phase 2.
-- **Phase 5: User Story 3**: Depends on Phase 2 and reuses infrastructure assets from User Story 1.
+- **Phase 5: User Story 3**: Depends on Phase 2 and User Story 1 because release promotion requires provisioned App Service environments, deployment targets, and environment outputs from the infrastructure story.
 - **Phase 6: Polish & Cross-Cutting Concerns**: Depends on the user stories selected for delivery.
 
 ### User Story Dependencies

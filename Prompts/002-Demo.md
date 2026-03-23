@@ -39,3 +39,5 @@ Constraints:
 - Prefer incremental rollout with low blast radius.
 ```
 * `/speckit.tasks`
+* `/speckit.analyze`
+* `analysis remediations + /speckit.analyze`
