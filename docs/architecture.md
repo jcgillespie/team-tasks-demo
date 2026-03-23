@@ -40,3 +40,10 @@ It is intentionally simple so later worktree-based agent tasks can extend it saf
 
 - Backend: xUnit + EF Core InMemory provider for service logic tests
 - Frontend: Vitest + React Testing Library for baseline UI behavior
+
+## Delivery Automation
+
+- Infrastructure is defined in `infra/opentofu/` with separate `dev`, `staging`, and `prod` roots.
+- `infra-plan.yml`, `infra-apply.yml`, and `drift-detection.yml` provide plan/apply safeguards and drift visibility.
+- `release.yml` builds artifacts once and promotes the same bundle through `dev`, `staging`, and `prod`.
+- Production promotion uses staged deployment patterns and rollback support through slot swap or manifest redeploy.

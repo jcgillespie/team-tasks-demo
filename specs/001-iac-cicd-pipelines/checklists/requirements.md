@@ -28,8 +28,12 @@
 - [x] User scenarios cover primary flows
 - [x] Feature meets measurable outcomes defined in Success Criteria
 - [x] No implementation details leak into specification
+- [x] Pull request evidence requirements are defined for tests and workflow validation
+- [x] Constitution compliance confirmation is required for implementation reviews
 
 ## Notes
 
 - Validation pass #1: all checklist items satisfied.
 - No clarification blockers detected; specification is ready for `/speckit.plan`.
+- Governance update: PR evidence and constitution checkpoints are tracked in review workflow guidance.
+- Delivery evidence update: CI, infra, and release workflow expectations are now documented with runbook references.

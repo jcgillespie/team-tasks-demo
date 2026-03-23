@@ -1,0 +1,8 @@
+# Global owners
+* @jcgillespie
+
+# Delivery automation
+/.github/workflows/ @jcgillespie
+/infra/opentofu/ @jcgillespie
+/scripts/release/ @jcgillespie
+/docs/operations/ @jcgillespie

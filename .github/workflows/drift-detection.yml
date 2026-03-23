@@ -1,0 +1,47 @@
+name: drift-detection
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  detect-drift:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [dev, staging, prod]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.8.8
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Detect drift
+        working-directory: infra/opentofu/environments/${{ matrix.env }}
+        run: |
+          tofu init -backend-config=backend.hcl
+          tofu validate
+          tofu plan -var-file=${{ matrix.env }}.tfvars -detailed-exitcode -out=drift.tfplan || code=$?
+          if [ "${code:-0}" -eq 2 ]; then
+            echo "drift_detected=true" >> "$GITHUB_OUTPUT"
+          elif [ "${code:-0}" -gt 2 ]; then
+            exit "$code"
+          fi
+
+      - name: Upload drift report
+        uses: actions/upload-artifact@v4
+        with:
+          name: drift-${{ matrix.env }}
+          path: infra/opentofu/environments/${{ matrix.env }}/drift.tfplan

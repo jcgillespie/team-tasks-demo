@@ -3,9 +3,26 @@ using TeamTasks.Api.Models;
 
 namespace TeamTasks.Api.Data;
 
+public enum DatabaseProviderMode
+{
+    Sqlite,
+    SqlServer
+}
+
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
+
+    public static void ConfigureProvider(DbContextOptionsBuilder optionsBuilder, string connectionString, DatabaseProviderMode providerMode)
+    {
+        if (providerMode == DatabaseProviderMode.SqlServer)
+        {
+            optionsBuilder.UseSqlServer(connectionString);
+            return;
+        }
+
+        optionsBuilder.UseSqlite(connectionString);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

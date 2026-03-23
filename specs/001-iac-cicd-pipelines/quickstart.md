@@ -75,6 +75,15 @@ Each environment receives its own Azure resource group, Key Vault, monitoring re
    - Trigger: nightly schedule and manual dispatch
    - Detects drift without applying changes
 
+## CI Failure Handling
+
+When `ci.yml` fails on a pull request:
+
+1. Open the failed step logs and identify the first failing command.
+2. Reproduce locally using the same command (`pnpm lint`, `pnpm test`, `dotnet test`, or security scan).
+3. Commit the fix and push to the same pull request branch.
+4. Wait for required checks to return green before requesting final approval.
+
 ## OIDC Setup Summary
 
 1. Create GitHub Environments named `dev`, `staging`, and `prod`.
@@ -102,3 +111,10 @@ Each environment receives its own Azure resource group, Key Vault, monitoring re
 - Secret rotation and validation
 
 These runbooks should live under `/docs/operations/` and be updated in the same pull request as the workflows they describe.
+
+## Operator Onboarding Validation
+
+1. Follow `docs/operations/environment-setup.md` to configure environments and OIDC.
+2. Trigger `infra-plan.yml` for `dev` and confirm plan artifact generation.
+3. Trigger `release.yml` manually and confirm staged jobs appear in order (`dev` -> `staging` -> `prod`).
+4. Review `docs/operations/secret-rotation.md` and complete a non-production rotation rehearsal.

@@ -41,3 +41,4 @@ Constraints:
 * `/speckit.tasks`
 * `/speckit.analyze`
 * `analysis remediations + /speckit.analyze`
+* `speckit.implement` yolo

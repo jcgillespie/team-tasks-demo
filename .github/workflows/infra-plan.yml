@@ -1,0 +1,54 @@
+name: infra-plan
+
+on:
+  pull_request:
+    paths:
+      - 'infra/opentofu/**'
+      - '.github/workflows/infra-plan.yml'
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: 'Environment to plan'
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  validate-and-plan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [dev, staging, prod]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.8.8
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Validate and plan
+        working-directory: infra/opentofu/environments/${{ matrix.env }}
+        run: |
+          tofu fmt -check
+          tofu init -backend-config=backend.hcl
+          tofu validate
+          tofu plan -var-file=${{ matrix.env }}.tfvars -out=plan.tfplan
+
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra-plan-${{ matrix.env }}
+          path: infra/opentofu/environments/${{ matrix.env }}/plan.tfplan

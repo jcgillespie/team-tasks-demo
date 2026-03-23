@@ -1,0 +1,65 @@
+name: ci
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: client/pnpm-lock.yaml
+
+      - name: Client install
+        working-directory: client
+        run: pnpm install --frozen-lockfile
+
+      - name: Client lint
+        working-directory: client
+        run: pnpm lint
+
+      - name: Client build
+        working-directory: client
+        run: pnpm build
+
+      - name: Client test
+        working-directory: client
+        run: pnpm test
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore and build
+        run: |
+          dotnet restore TeamTasks.slnx
+          dotnet build TeamTasks.slnx --no-restore
+
+      - name: Backend tests
+        run: dotnet test TeamTasks.slnx --no-build --verbosity normal
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .github/gitleaks.toml
+
+      - name: Publish test report
+        run: scripts/release/publish-test-report.sh
+
+      - name: Publish workflow summary
+        run: scripts/release/publish-workflow-summary.sh

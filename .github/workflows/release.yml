@@ -1,0 +1,149 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build-once:
+    runs-on: ubuntu-latest
+    outputs:
+      release_version: ${{ steps.vars.outputs.release_version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: vars
+        run: |
+          echo "release_version=${GITHUB_REF_NAME}-${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+
+      - name: Build frontend
+        working-directory: client
+        run: |
+          corepack enable pnpm
+          pnpm install --frozen-lockfile
+          pnpm build
+          tar -czf ../frontend.tgz dist
+
+      - name: Build API
+        run: |
+          dotnet restore TeamTasks.slnx
+          dotnet publish server/TeamTasks.Api/TeamTasks.Api.csproj -c Release -o publish/api
+          tar -czf api.tgz -C publish api
+
+      - name: Create manifest
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.release_version }}
+          SOURCE_COMMIT_SHA: ${{ github.sha }}
+          FRONTEND_PACKAGE: frontend.tgz
+          API_PACKAGE: api.tgz
+          OUTPUT_PATH: release-manifest.json
+        run: scripts/release/create-manifest.sh
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-bundle
+          retention-days: 30
+          path: |
+            frontend.tgz
+            api.tgz
+            release-manifest.json
+
+      - name: Cleanup local bundle files
+        if: always()
+        run: rm -f frontend.tgz api.tgz release-manifest.json
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    needs: build-once
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+
+      - name: Deploy frontend dev
+        env:
+          WEBAPP_NAME: ${{ vars.DEV_FRONTEND_APP_NAME }}
+          RESOURCE_GROUP: ${{ vars.DEV_RESOURCE_GROUP }}
+          PACKAGE_PATH: frontend.tgz
+        run: scripts/release/deploy-webapp.sh
+
+      - name: Deploy api dev
+        env:
+          WEBAPP_NAME: ${{ vars.DEV_API_APP_NAME }}
+          RESOURCE_GROUP: ${{ vars.DEV_RESOURCE_GROUP }}
+          PACKAGE_PATH: api.tgz
+        run: scripts/release/deploy-webapp.sh
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+
+      - name: Deploy frontend staging
+        env:
+          WEBAPP_NAME: ${{ vars.STAGING_FRONTEND_APP_NAME }}
+          RESOURCE_GROUP: ${{ vars.STAGING_RESOURCE_GROUP }}
+          PACKAGE_PATH: frontend.tgz
+        run: scripts/release/deploy-webapp.sh
+
+      - name: Deploy api staging
+        env:
+          WEBAPP_NAME: ${{ vars.STAGING_API_APP_NAME }}
+          RESOURCE_GROUP: ${{ vars.STAGING_RESOURCE_GROUP }}
+          PACKAGE_PATH: api.tgz
+        run: scripts/release/deploy-webapp.sh
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    environment: prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+
+      - name: Deploy frontend prod
+        env:
+          WEBAPP_NAME: ${{ vars.PROD_FRONTEND_APP_NAME }}
+          RESOURCE_GROUP: ${{ vars.PROD_RESOURCE_GROUP }}
+          PACKAGE_PATH: frontend.tgz
+          WEBAPP_SLOT: staging
+        run: scripts/release/deploy-webapp.sh
+
+      - name: Deploy api prod
+        env:
+          WEBAPP_NAME: ${{ vars.PROD_API_APP_NAME }}
+          RESOURCE_GROUP: ${{ vars.PROD_RESOURCE_GROUP }}
+          PACKAGE_PATH: api.tgz
+          WEBAPP_SLOT: staging
+        run: scripts/release/deploy-webapp.sh
+
+      - name: Health check and rollback
+        env:
+          FRONTEND_URL: ${{ vars.PROD_FRONTEND_URL }}
+          API_URL: ${{ vars.PROD_API_URL }}
+          WEBAPP_NAME: ${{ vars.PROD_API_APP_NAME }}
+          RESOURCE_GROUP: ${{ vars.PROD_RESOURCE_GROUP }}
+          SOURCE_SLOT: production
+          TARGET_SLOT: staging
+        run: |
+          if ! scripts/release/smoke-test.sh; then
+            scripts/release/rollback-webapp.sh
+            exit 1
+          fi

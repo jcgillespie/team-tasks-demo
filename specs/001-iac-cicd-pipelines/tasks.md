@@ -11,9 +11,9 @@
 
 **Purpose**: Create the repository structure and shared entry points needed for delivery automation work.
 
-- [ ] T001 Create infrastructure and operations documentation scaffolding in `infra/opentofu/README.md` and `docs/operations/README.md`
-- [ ] T002 Create the delivery test workspace configuration in `tests/delivery/package.json`, `tests/delivery/tsconfig.json`, and `tests/delivery/vitest.config.ts`
-- [ ] T003 [P] Create the release script command index in `scripts/release/README.md`
+- [X] T001 Create infrastructure and operations documentation scaffolding in `infra/opentofu/README.md` and `docs/operations/README.md`
+- [X] T002 Create the delivery test workspace configuration in `tests/delivery/package.json`, `tests/delivery/tsconfig.json`, and `tests/delivery/vitest.config.ts`
+- [X] T003 [P] Create the release script command index in `scripts/release/README.md`
 
 ---
 
@@ -23,13 +23,13 @@
 
 **Critical**: No user story work should start until this phase is complete.
 
-- [ ] T004 Create the workflow fixture catalog for infrastructure, CI, and release tests in `tests/delivery/src/shared/fixtureCatalog.ts`
-- [ ] T005 [P] Create workflow YAML parsing and assertion helpers in `tests/delivery/src/shared/workflowTestUtils.ts` and `tests/delivery/src/shared/githubContext.ts`
-- [ ] T006 [P] Create the shared release helper shell library in `scripts/release/common.sh` and `scripts/release/smoke-test.sh`
-- [ ] T007 [P] Create shared OpenTofu provider, version, variable, and local definitions in `infra/opentofu/providers.tf`, `infra/opentofu/versions.tf`, `infra/opentofu/variables.tf`, and `infra/opentofu/locals.tf`
-- [ ] T008 Create the GitHub Environment, OIDC, and branch-protection setup runbook in `docs/operations/environment-setup.md` and `docs/operations/pull-request-governance.md`
-- [ ] T037 [P] Create a pull request evidence template in `.github/pull_request_template.md` that requires test execution evidence, constitution compliance confirmation, and UX verification notes for UI-facing changes
-- [ ] T038 Update constitution compliance and pull request evidence guidance in `specs/001-iac-cicd-pipelines/checklists/requirements.md` and `docs/operations/pull-request-governance.md`
+- [X] T004 Create the workflow fixture catalog for infrastructure, CI, and release tests in `tests/delivery/src/shared/fixtureCatalog.ts`
+- [X] T005 [P] Create workflow YAML parsing and assertion helpers in `tests/delivery/src/shared/workflowTestUtils.ts` and `tests/delivery/src/shared/githubContext.ts`
+- [X] T006 [P] Create the shared release helper shell library in `scripts/release/common.sh` and `scripts/release/smoke-test.sh`
+- [X] T007 [P] Create shared OpenTofu provider, version, variable, and local definitions in `infra/opentofu/providers.tf`, `infra/opentofu/versions.tf`, `infra/opentofu/variables.tf`, and `infra/opentofu/locals.tf`
+- [X] T008 Create the GitHub Environment, OIDC, and branch-protection setup runbook in `docs/operations/environment-setup.md` and `docs/operations/pull-request-governance.md`
+- [X] T037 [P] Create a pull request evidence template in `.github/pull_request_template.md` that requires test execution evidence, constitution compliance confirmation, and UX verification notes for UI-facing changes
+- [X] T038 Update constitution compliance and pull request evidence guidance in `specs/001-iac-cicd-pipelines/checklists/requirements.md` and `docs/operations/pull-request-governance.md`
 
 **Checkpoint**: Shared delivery tooling, workflow test harness, and environment conventions are ready.
 
@@ -43,22 +43,22 @@
 
 ### Tests for User Story 1
 
-- [ ] T009 [P] [US1] Create failing environment-root validation tests in `tests/delivery/src/infra/environment-roots.spec.ts`
-- [ ] T010 [P] [US1] Create failing infrastructure workflow contract tests in `tests/delivery/src/infra/infra-workflows.spec.ts`
-- [ ] T039 [P] [US1] Create failing hosted-runtime configuration tests covering Azure SQL provider selection, App Service configuration binding, and missing-secret failure paths in `tests/TeamTasks.Api.Tests/HostedConfigurationTests.cs`
+- [X] T009 [P] [US1] Create failing environment-root validation tests in `tests/delivery/src/infra/environment-roots.spec.ts`
+- [X] T010 [P] [US1] Create failing infrastructure workflow contract tests in `tests/delivery/src/infra/infra-workflows.spec.ts`
+- [X] T039 [P] [US1] Create failing hosted-runtime configuration tests covering Azure SQL provider selection, App Service configuration binding, and missing-secret failure paths in `tests/TeamTasks.Api.Tests/HostedConfigurationTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T011 [P] [US1] Implement the shared naming and tagging module in `infra/opentofu/modules/platform_baseline/main.tf`, `infra/opentofu/modules/platform_baseline/variables.tf`, and `infra/opentofu/modules/platform_baseline/outputs.tf`
-- [ ] T012 [P] [US1] Implement the App Service and monitoring module in `infra/opentofu/modules/app_service_stack/main.tf`, `infra/opentofu/modules/app_service_stack/variables.tf`, and `infra/opentofu/modules/app_service_stack/outputs.tf`
-- [ ] T013 [P] [US1] Implement the data and secret management module in `infra/opentofu/modules/data_protection/main.tf`, `infra/opentofu/modules/data_protection/variables.tf`, and `infra/opentofu/modules/data_protection/outputs.tf`
-- [ ] T040 [US1] Add environment-aware database provider selection for local SQLite and hosted Azure SQL in `server/TeamTasks.Api/Program.cs`, `server/TeamTasks.Api/Data/AppDbContext.cs`, and `server/TeamTasks.Api/TeamTasks.Api.csproj`
-- [ ] T041 [US1] Add managed configuration and Key Vault-backed setting handling for hosted deployments in `server/TeamTasks.Api/Program.cs`, `server/TeamTasks.Api/appsettings.json`, and `server/TeamTasks.Api/appsettings.Development.json`
-- [ ] T014 [US1] Compose the dev environment root and backend configuration in `infra/opentofu/environments/dev/main.tf`, `infra/opentofu/environments/dev/variables.tf`, `infra/opentofu/environments/dev/outputs.tf`, `infra/opentofu/environments/dev/backend.hcl`, and `infra/opentofu/environments/dev/dev.tfvars`
-- [ ] T015 [US1] Compose the staging environment root and backend configuration in `infra/opentofu/environments/staging/main.tf`, `infra/opentofu/environments/staging/variables.tf`, `infra/opentofu/environments/staging/outputs.tf`, `infra/opentofu/environments/staging/backend.hcl`, and `infra/opentofu/environments/staging/staging.tfvars`
-- [ ] T016 [US1] Compose the prod environment root and backend configuration in `infra/opentofu/environments/prod/main.tf`, `infra/opentofu/environments/prod/variables.tf`, `infra/opentofu/environments/prod/outputs.tf`, `infra/opentofu/environments/prod/backend.hcl`, and `infra/opentofu/environments/prod/prod.tfvars`
-- [ ] T017 [US1] Implement the infrastructure plan, apply, and drift-detection workflows in `.github/workflows/infra-plan.yml`, `.github/workflows/infra-apply.yml`, and `.github/workflows/drift-detection.yml`
-- [ ] T018 [US1] Document provisioning flow, drift remediation, and environment outputs in `docs/operations/deployment.md` and `docs/operations/drift-response.md`
+- [X] T011 [P] [US1] Implement the shared naming and tagging module in `infra/opentofu/modules/platform_baseline/main.tf`, `infra/opentofu/modules/platform_baseline/variables.tf`, and `infra/opentofu/modules/platform_baseline/outputs.tf`
+- [X] T012 [P] [US1] Implement the App Service and monitoring module in `infra/opentofu/modules/app_service_stack/main.tf`, `infra/opentofu/modules/app_service_stack/variables.tf`, and `infra/opentofu/modules/app_service_stack/outputs.tf`
+- [X] T013 [P] [US1] Implement the data and secret management module in `infra/opentofu/modules/data_protection/main.tf`, `infra/opentofu/modules/data_protection/variables.tf`, and `infra/opentofu/modules/data_protection/outputs.tf`
+- [X] T040 [US1] Add environment-aware database provider selection for local SQLite and hosted Azure SQL in `server/TeamTasks.Api/Program.cs`, `server/TeamTasks.Api/Data/AppDbContext.cs`, and `server/TeamTasks.Api/TeamTasks.Api.csproj`
+- [X] T041 [US1] Add managed configuration and Key Vault-backed setting handling for hosted deployments in `server/TeamTasks.Api/Program.cs`, `server/TeamTasks.Api/appsettings.json`, and `server/TeamTasks.Api/appsettings.Development.json`
+- [X] T014 [US1] Compose the dev environment root and backend configuration in `infra/opentofu/environments/dev/main.tf`, `infra/opentofu/environments/dev/variables.tf`, `infra/opentofu/environments/dev/outputs.tf`, `infra/opentofu/environments/dev/backend.hcl`, and `infra/opentofu/environments/dev/dev.tfvars`
+- [X] T015 [US1] Compose the staging environment root and backend configuration in `infra/opentofu/environments/staging/main.tf`, `infra/opentofu/environments/staging/variables.tf`, `infra/opentofu/environments/staging/outputs.tf`, `infra/opentofu/environments/staging/backend.hcl`, and `infra/opentofu/environments/staging/staging.tfvars`
+- [X] T016 [US1] Compose the prod environment root and backend configuration in `infra/opentofu/environments/prod/main.tf`, `infra/opentofu/environments/prod/variables.tf`, `infra/opentofu/environments/prod/outputs.tf`, `infra/opentofu/environments/prod/backend.hcl`, and `infra/opentofu/environments/prod/prod.tfvars`
+- [X] T017 [US1] Implement the infrastructure plan, apply, and drift-detection workflows in `.github/workflows/infra-plan.yml`, `.github/workflows/infra-apply.yml`, and `.github/workflows/drift-detection.yml`
+- [X] T018 [US1] Document provisioning flow, drift remediation, and environment outputs in `docs/operations/deployment.md` and `docs/operations/drift-response.md`
 
 **Checkpoint**: A single infrastructure workflow can plan and provision each environment independently with auditable outputs and drift detection.
 
@@ -72,16 +72,16 @@
 
 ### Tests for User Story 2
 
-- [ ] T019 [P] [US2] Create failing PR CI regression tests in `tests/delivery/src/ci/ci-workflow.spec.ts`
-- [ ] T020 [P] [US2] Create failing security and report-publication tests in `tests/delivery/src/ci/security-reporting.spec.ts`
+- [X] T019 [P] [US2] Create failing PR CI regression tests in `tests/delivery/src/ci/ci-workflow.spec.ts`
+- [X] T020 [P] [US2] Create failing security and report-publication tests in `tests/delivery/src/ci/security-reporting.spec.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T021 [P] [US2] Implement the pull-request validation workflow in `.github/workflows/ci.yml`
-- [ ] T022 [P] [US2] Configure dependency and secret-scanning baselines in `.github/dependabot.yml` and `.github/gitleaks.toml`
-- [ ] T023 [US2] Implement reusable workflow summary and test-report scripts in `scripts/release/publish-test-report.sh` and `scripts/release/publish-workflow-summary.sh`
-- [ ] T024 [US2] Define required checks and reviewer ownership in `.github/CODEOWNERS` and `docs/operations/pull-request-governance.md`
-- [ ] T025 [US2] Update contributor guidance for CI expectations and failure handling in `README.md` and `specs/001-iac-cicd-pipelines/quickstart.md`
+- [X] T021 [P] [US2] Implement the pull-request validation workflow in `.github/workflows/ci.yml`
+- [X] T022 [P] [US2] Configure dependency and secret-scanning baselines in `.github/dependabot.yml` and `.github/gitleaks.toml`
+- [X] T023 [US2] Implement reusable workflow summary and test-report scripts in `scripts/release/publish-test-report.sh` and `scripts/release/publish-workflow-summary.sh`
+- [X] T024 [US2] Define required checks and reviewer ownership in `.github/CODEOWNERS` and `docs/operations/pull-request-governance.md`
+- [X] T025 [US2] Update contributor guidance for CI expectations and failure handling in `README.md` and `specs/001-iac-cicd-pipelines/quickstart.md`
 
 **Checkpoint**: Pull requests receive automated lint, build, test, and security feedback with report artifacts and merge-blocking governance.
 
@@ -95,16 +95,16 @@
 
 ### Tests for User Story 3
 
-- [ ] T026 [P] [US3] Create failing release manifest validation tests in `tests/delivery/src/release/release-manifest.spec.ts`
-- [ ] T027 [P] [US3] Create failing promotion and rollback workflow tests in `tests/delivery/src/release/release-workflow.spec.ts`
+- [X] T026 [P] [US3] Create failing release manifest validation tests in `tests/delivery/src/release/release-manifest.spec.ts`
+- [X] T027 [P] [US3] Create failing promotion and rollback workflow tests in `tests/delivery/src/release/release-workflow.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T028 [P] [US3] Implement manifest and checksum generation scripts in `scripts/release/create-manifest.sh` and `scripts/release/verify-checksums.sh`
-- [ ] T029 [P] [US3] Implement App Service deploy and rollback scripts in `scripts/release/deploy-webapp.sh` and `scripts/release/rollback-webapp.sh`
-- [ ] T030 [US3] Implement the multi-stage application release workflow in `.github/workflows/release.yml`
-- [ ] T031 [US3] Add production slot deployment outputs and app-setting templates in `infra/opentofu/modules/app_service_stack/main.tf` and `infra/opentofu/modules/app_service_stack/outputs.tf`
-- [ ] T032 [US3] Document staged promotion, rollback execution, and incident release decisions in `docs/operations/deployment.md`, `docs/operations/rollback.md`, and `docs/architecture.md`
+- [X] T028 [P] [US3] Implement manifest and checksum generation scripts in `scripts/release/create-manifest.sh` and `scripts/release/verify-checksums.sh`
+- [X] T029 [P] [US3] Implement App Service deploy and rollback scripts in `scripts/release/deploy-webapp.sh` and `scripts/release/rollback-webapp.sh`
+- [X] T030 [US3] Implement the multi-stage application release workflow in `.github/workflows/release.yml`
+- [X] T031 [US3] Add production slot deployment outputs and app-setting templates in `infra/opentofu/modules/app_service_stack/main.tf` and `infra/opentofu/modules/app_service_stack/outputs.tf`
+- [X] T032 [US3] Document staged promotion, rollback execution, and incident release decisions in `docs/operations/deployment.md`, `docs/operations/rollback.md`, and `docs/architecture.md`
 
 **Checkpoint**: Releases are immutable, approval-gated, health-checked, and rollback-capable across all environments.
 
@@ -114,12 +114,12 @@
 
 **Purpose**: Close documentation, compliance, and operational validation gaps that span multiple stories.
 
-- [ ] T033 [P] Update delivery compliance evidence in `specs/001-iac-cicd-pipelines/checklists/requirements.md`
-- [ ] T034 [P] Validate quickstart and operator onboarding flow in `specs/001-iac-cicd-pipelines/quickstart.md` and `docs/operations/README.md`
-- [ ] T035 Harden artifact retention, workflow permissions, and cleanup behavior in `.github/workflows/release.yml` and `.github/workflows/infra-apply.yml`
-- [ ] T036 Run the full validation command matrix and capture operator notes in `docs/operations/README.md` and `README.md`
-- [ ] T042 [P] Document secret rotation, secret-reference refresh behavior, and post-rotation validation in `docs/operations/secret-rotation.md` and `specs/001-iac-cicd-pipelines/quickstart.md`
-- [ ] T043 Add a delivery validation task for rotated secret recovery across hosted API configuration and release workflows in `docs/operations/secret-rotation.md` and `docs/operations/deployment.md`
+- [X] T033 [P] Update delivery compliance evidence in `specs/001-iac-cicd-pipelines/checklists/requirements.md`
+- [X] T034 [P] Validate quickstart and operator onboarding flow in `specs/001-iac-cicd-pipelines/quickstart.md` and `docs/operations/README.md`
+- [X] T035 Harden artifact retention, workflow permissions, and cleanup behavior in `.github/workflows/release.yml` and `.github/workflows/infra-apply.yml`
+- [X] T036 Run the full validation command matrix and capture operator notes in `docs/operations/README.md` and `README.md`
+- [X] T042 [P] Document secret rotation, secret-reference refresh behavior, and post-rotation validation in `docs/operations/secret-rotation.md` and `specs/001-iac-cicd-pipelines/quickstart.md`
+- [X] T043 Add a delivery validation task for rotated secret recovery across hosted API configuration and release workflows in `docs/operations/secret-rotation.md` and `docs/operations/deployment.md`
 
 ---
 
