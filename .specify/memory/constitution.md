@@ -1,50 +1,94 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: template-initialized (unversioned) -> 1.0.0
+- Modified principles:
+	- Principle 1 placeholder -> I. Code Quality Is Mandatory
+	- Principle 2 placeholder -> II. Test-Driven Development (NON-NEGOTIABLE)
+	- Principle 3 placeholder -> III. Documentation Is Part Of Done
+	- Principle 4 placeholder -> IV. UX Consistency Is Required
+	- Principle 5 placeholder -> V. Keep Solutions Simple And Maintainable
+- Added sections:
+	- Engineering Standards
+	- Delivery Workflow & Quality Gates
+- Removed sections:
+	- None
+- Templates requiring updates:
+	- ✅ .specify/templates/plan-template.md
+	- ✅ .specify/templates/spec-template.md
+	- ✅ .specify/templates/tasks-template.md
+	- ⚠ pending: .specify/templates/commands/*.md (directory not present in this repository)
+- Follow-up TODOs:
+	- None
+-->
+
+# Team Tasks Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Code Quality Is Mandatory
+All production code MUST be readable, typed where supported, and reviewed for
+correctness and maintainability. Every change MUST pass linting, formatting,
+build, and static analysis checks configured for the touched stack. Complex
+logic MUST include concise intent-focused comments when the code alone is not
+self-explanatory. Rationale: defects prevented early are cheaper than defects
+found in runtime or after release.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Test-Driven Development (NON-NEGOTIABLE)
+All behavior changes MUST follow Red-Green-Refactor: write tests first, observe
+failure, implement minimal code to pass, then refactor safely. Unit tests are
+required for domain logic, and integration or contract tests are required when
+API contracts, persistence behavior, or cross-boundary interactions change.
+Rationale: TDD keeps scope focused and reduces regression risk.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Documentation Is Part Of Done
+Documentation MUST be updated in the same change set when behavior, architecture,
+setup, APIs, or user workflows change. At minimum, relevant updates MUST be made
+to feature specs, quickstart guidance, architecture notes, or API contract docs.
+Rationale: current documentation is required for reliable onboarding and safe
+handoffs across contributors.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. UX Consistency Is Required
+UI changes MUST align with established interaction patterns, visual hierarchy,
+terminology, and feedback behavior across the application. New UI MUST include
+loading, empty, and error states, and MUST preserve keyboard accessibility and
+legible contrast. Rationale: consistency lowers cognitive load and prevents
+fragmented user experiences.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Keep Solutions Simple And Maintainable
+Changes MUST prefer the simplest design that satisfies current requirements.
+Premature abstraction, speculative frameworks, and unnecessary dependencies are
+prohibited unless justified in the implementation plan. Rationale: simpler code
+accelerates review, testing, and future iteration.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Engineering Standards
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- The canonical stack is ASP.NET Core Web API + React/TypeScript; deviations
+	MUST be justified in the implementation plan.
+- Public API changes MUST include explicit contract and compatibility notes.
+- New dependencies MUST include a short justification and maintenance impact.
+- Every change MUST leave the repository in a runnable state locally.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Delivery Workflow & Quality Gates
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Specs MUST define independently testable user stories with measurable success
+	criteria before implementation begins.
+- Plans MUST document how each constitutional principle is satisfied.
+- Tasks MUST include test-first sequencing and explicit documentation updates.
+- Pull requests MUST include evidence of test execution and a summary of UX
+	verification for UI-facing changes.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution overrides informal team practices for planning, implementation,
+and review.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- Amendment process: changes require a documented proposal, reviewer approval,
+	and updates to impacted templates before ratification.
+- Versioning policy (semantic versioning):
+	- MAJOR for incompatible principle removals or redefinitions.
+	- MINOR for added principles or materially expanded guidance.
+	- PATCH for clarifications, wording refinements, or typo fixes.
+- Compliance review expectations: each plan, spec, task list, and pull request
+	MUST include an explicit constitution compliance check.
+
+**Version**: 1.0.0 | **Ratified**: 2026-03-23 | **Last Amended**: 2026-03-23

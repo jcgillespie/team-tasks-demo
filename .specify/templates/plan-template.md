@@ -31,7 +31,16 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- **Code Quality Gate**: Define how linting, formatting, type checks, and build
+  validation will run for all touched components.
+- **TDD Gate**: Identify failing-first tests for each behavior change and the
+  planned unit/integration/contract coverage.
+- **Documentation Gate**: List docs that must be updated (spec, quickstart,
+  architecture notes, contracts, or README) as part of the same delivery.
+- **UX Consistency Gate**: For UI changes, document consistency expectations,
+  accessibility checks, and loading/empty/error state behavior.
+- **Simplicity Gate**: Justify any new dependency or abstraction that is not
+  strictly required for current scope.
 
 ## Project Structure
 

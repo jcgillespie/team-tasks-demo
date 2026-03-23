@@ -26,7 +26,7 @@
 
 **Why this priority**: [Explain the value and why it has this priority level]
 
-**Independent Test**: [Describe how this can be tested independently - e.g., "Can be fully tested by [specific action] and delivers [specific value]"]
+**Independent Test**: [Describe how this can be tested independently with automated tests and delivers specific value]
 
 **Acceptance Scenarios**:
 
@@ -41,7 +41,7 @@
 
 **Why this priority**: [Explain the value and why it has this priority level]
 
-**Independent Test**: [Describe how this can be tested independently]
+**Independent Test**: [Describe how this can be tested independently with automated tests]
 
 **Acceptance Scenarios**:
 
@@ -55,7 +55,7 @@
 
 **Why this priority**: [Explain the value and why it has this priority level]
 
-**Independent Test**: [Describe how this can be tested independently]
+**Independent Test**: [Describe how this can be tested independently with automated tests]
 
 **Acceptance Scenarios**:
 
@@ -74,6 +74,17 @@
 
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
+
+## Quality, Testing, Documentation, and UX Constraints *(mandatory)*
+
+- **QC-001 (Code Quality)**: Define required linting, formatting, type checks,
+  and build validations for touched components.
+- **QC-002 (TDD)**: Define test-first approach for each user story, including
+  expected failing tests before implementation.
+- **QC-003 (Documentation)**: Identify which docs MUST be updated as part of
+  delivery (spec, quickstart, architecture, contracts, README).
+- **QC-004 (UX Consistency)**: For UI changes, define consistency constraints,
+  accessibility expectations, and loading/empty/error state requirements.
 
 ## Requirements *(mandatory)*
 
