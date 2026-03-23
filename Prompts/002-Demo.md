@@ -38,3 +38,4 @@ Constraints:
 - Prioritize code quality, TDD, documentation, and UX consistency.
 - Prefer incremental rollout with low blast radius.
 ```
+* `/speckit.tasks`
