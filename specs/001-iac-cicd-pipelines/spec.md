@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "I want to add Infrastructure as Code and build/deployment pipelines with CI/CD to this application. This will enable us to ship faster with reliable, repeatable releases. It will reduce production risk through automated quality and security gates. It'll improve uptime and recovery with safer deployments and rollback plans, and it'll lower operational overhead with standardized environments"
 
+## Clarifications
+
+### Session 2026-03-23
+
+- Q: Which cloud/platform should this spec target for IaC and deployments? → A: Cloud-agnostic spec; choose the platform during the Plan phase.
+- Q: Which environments are required for the release lifecycle? → A: Three environments: dev, staging, and prod.
+- Q: Which primary IaC tool should this feature require? → A: Defer IaC tool choice to the Plan phase.
+- Q: How should IaC and application delivery be organized in CI/CD? → A: Separate coordinated pipelines: one for IaC and one for application delivery.
+- Q: Are preview environments required for pull requests? → A: Preview environments are out of scope.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Standardized Environment Provisioning (Priority: P1)
@@ -73,10 +83,14 @@ As a release manager, I can promote a tested build from development to staging t
 ### Functional Requirements
 
 - **FR-001**: System MUST define reproducible environment blueprints for development, staging, and production with clear, stage-specific configuration boundaries.
+- **FR-001A**: System MUST remain cloud-agnostic at the specification level, with concrete platform selection deferred to the planning phase.
+- **FR-001B**: System MUST remain IaC-tool-agnostic at the specification level, with the primary implementation tool selected during planning.
 - **FR-002**: System MUST provision all platform capabilities required to run the frontend and API, including runtime hosting, baseline networking, configuration integration, and monitoring.
 - **FR-003**: System MUST support isolated environment state management so changes for one stage do not impact other stages.
 - **FR-004**: System MUST provide a change preview and approval step before infrastructure modifications are applied.
 - **FR-005**: System MUST run continuous integration on pull requests, including code quality checks, automated tests, build validation, and report publication.
+- **FR-005A**: System MUST define separate but coordinated delivery workflows for infrastructure changes and application changes, with traceable linkage between related runs and releases.
+- **FR-005B**: System MUST treat pull-request preview environments as out of scope for this feature so implementation can focus on core CI, artifact, infrastructure, and promotion workflows.
 - **FR-006**: System MUST execute automated security and secret-exposure checks in the CI workflow and block progression on high-severity findings.
 - **FR-007**: System MUST produce versioned, traceable release artifacts and retain them according to a documented retention policy.
 - **FR-008**: System MUST support controlled continuous delivery from mainline and release branches with stage progression from development to staging to production.
@@ -100,7 +114,11 @@ As a release manager, I can promote a tested build from development to staging t
 ### Assumptions
 
 - Existing repository test suites and build processes for client and server remain the baseline quality gates and will be integrated into CI.
-- Development, staging, and production remain the required lifecycle environments.
+- Exactly three lifecycle environments are in scope: development, staging, and production.
+- Cloud provider selection is intentionally deferred until planning so the specification can compare viable hosting and delivery options without locking the design prematurely.
+- IaC implementation tooling is intentionally deferred until planning so the design can compare portability, team fit, and operational tradeoffs before standardizing.
+- Infrastructure delivery and application delivery use separate workflows that coordinate through shared promotion records, approvals, and release evidence.
+- Pull-request preview environments are explicitly excluded from this feature scope.
 - Security policy for high-severity findings is fail-closed (release blocked until resolved or explicitly risk-accepted through governance).
 - Teams can provide designated approvers for protected promotion steps.
 
