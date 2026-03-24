@@ -1,0 +1,7 @@
+title = "Team Tasks gitleaks config"
+
+[allowlist]
+description = "Allow known non-secret placeholders"
+regexes = [
+  '''CHANGEME_IN_PIPELINE'''
+]

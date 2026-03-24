@@ -79,6 +79,28 @@ cd main/client
 pnpm test
 ```
 
+## CI Expectations
+
+Pull requests are expected to pass the quality gate workflow in `.github/workflows/ci.yml`.
+
+Required checks include:
+
+- `pnpm lint`, `pnpm build`, and `pnpm test` in `client/`
+- `dotnet build TeamTasks.slnx` and `dotnet test TeamTasks.slnx`
+- secret scanning and workflow summary publication
+
+If CI fails, fix the failing step and re-run checks before requesting review.
+
+## Delivery Validation Notes
+
+Latest local validation run:
+
+- `dotnet build TeamTasks.slnx` passed
+- `dotnet test TeamTasks.slnx` passed
+- `cd client && pnpm lint && pnpm build && pnpm test` passed
+- `cd tests/delivery && pnpm test` passed
+- OpenTofu command execution depends on local `tofu` installation and authenticated Azure context
+
 ## Optional Helper Script
 
 Start backend and frontend in separate Terminal windows:

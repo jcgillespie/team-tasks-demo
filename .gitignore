@@ -5,10 +5,17 @@
 # Node artifacts
 **/node_modules/
 **/dist/
+**/build/
 
 # Logs and temp files
 *.log
 .DS_Store
+Thumbs.db
+*.tmp
+*.swp
+
+# Environment files
+.env*
 
 # Local databases
 *.db
@@ -17,4 +24,16 @@
 
 # IDE and test output
 .vscode/
+.idea/
 coverage/
+
+# OpenTofu/Terraform local artifacts
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
