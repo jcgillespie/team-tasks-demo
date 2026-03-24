@@ -1,8 +1,9 @@
 application_name  = "teamtasks"
 environment       = "staging"
-location          = "eastus"
+resource_group_name = "rg-jcgillespie-stg"
+location          = "centralus"
 owner             = "platform"
 cost_center       = "engineering"
 allowed_origins   = ["https://teamtasks-staging.azurewebsites.net"]
 sql_admin_username = "teamtasks_admin"
-sql_admin_password = "CHANGEME_IN_PIPELINE"
+sql_admin_password = "qF*FUK%(hDd`fH+g`W7$"

@@ -19,4 +19,4 @@ az webapp deploy \
   --name "$WEBAPP_NAME" \
   --resource-group "$RESOURCE_GROUP" \
   --src-path "$PACKAGE_PATH" \
-  "${slot_arg[@]}"
+  "${slot_arg[@]+"${slot_arg[@]}"}"

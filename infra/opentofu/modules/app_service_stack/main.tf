@@ -25,7 +25,7 @@ resource "azurerm_service_plan" "this" {
   location            = var.location
   resource_group_name = var.resource_group_name
   os_type             = "Linux"
-  sku_name            = "B1"
+  sku_name            = "F1"
   tags                = var.tags
 }
 
@@ -48,6 +48,12 @@ resource "azurerm_linux_web_app" "frontend" {
 
   site_config {
     always_on = false
+
+    application_stack {
+      node_version = "22-lts"
+    }
+
+    app_command_line = "npx serve -s /home/site/wwwroot -l 8080"
   }
 }
 
@@ -64,13 +70,14 @@ resource "azurerm_linux_web_app" "api" {
   }
 
   app_settings = {
-    APPINSIGHTS_CONNECTION_STRING = azurerm_application_insights.this.connection_string
+    APPINSIGHTS_CONNECTION_STRING        = azurerm_application_insights.this.connection_string
     ConnectionStrings__DefaultConnection = local.sql_connection_reference
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE  = "false"
+    Cors__AllowedOrigins__0              = var.allowed_origins[0]
   }
 
   site_config {
-    always_on = true
+    always_on = false
     application_stack {
       dotnet_version = "10.0"
     }
@@ -81,24 +88,3 @@ resource "azurerm_linux_web_app" "api" {
   }
 }
 
-resource "azurerm_linux_web_app_slot" "frontend_staging" {
-  name           = "staging"
-  app_service_id = azurerm_linux_web_app.frontend.id
-  https_only     = true
-  tags           = var.tags
-
-  site_config {}
-}
-
-resource "azurerm_linux_web_app_slot" "api_staging" {
-  name           = "staging"
-  app_service_id = azurerm_linux_web_app.api.id
-  https_only     = true
-  tags           = var.tags
-
-  site_config {
-    application_stack {
-      dotnet_version = "10.0"
-    }
-  }
-}

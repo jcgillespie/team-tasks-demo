@@ -26,3 +26,14 @@ Thumbs.db
 .vscode/
 .idea/
 coverage/
+
+# OpenTofu/Terraform local artifacts
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

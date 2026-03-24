@@ -10,5 +10,7 @@ locals {
     owner       = var.owner
     cost_center = var.cost_center
     managed_by  = "opentofu"
+    owner       = "jgillespie@3cloudsolutions.com"
+    creator     = "jgillespie@3cloudsolutions.com"
   }
 }
