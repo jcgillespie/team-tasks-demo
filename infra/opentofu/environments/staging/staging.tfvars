@@ -6,4 +6,4 @@ owner             = "platform"
 cost_center       = "engineering"
 allowed_origins   = ["https://teamtasks-staging.azurewebsites.net"]
 sql_admin_username = "teamtasks_admin"
-sql_admin_password = "qF*FUK%(hDd`fH+g`W7$"
+sql_admin_password = "CHANGEME_IN_PIPELINE"
