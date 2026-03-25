@@ -33,7 +33,6 @@ corepack enable pnpm
 ## Local Setup
 
 ```bash
-cd main
 dotnet restore TeamTasks.slnx
 cd client
 pnpm install
@@ -42,7 +41,7 @@ pnpm install
 ## Run Backend
 
 ```bash
-cd main/server/TeamTasks.Api
+cd server/TeamTasks.Api
 dotnet run
 ```
 
@@ -55,7 +54,7 @@ API URLs:
 ## Run Frontend
 
 ```bash
-cd main/client
+cd client
 pnpm dev
 ```
 
@@ -68,14 +67,13 @@ Frontend URL:
 Backend tests:
 
 ```bash
-cd main
 dotnet test TeamTasks.slnx
 ```
 
 Frontend tests:
 
 ```bash
-cd main/client
+cd client
 pnpm test
 ```
 
@@ -84,7 +82,6 @@ pnpm test
 Start backend and frontend in separate Terminal windows:
 
 ```bash
-cd main
 ./scripts/dev.sh
 ```
 
