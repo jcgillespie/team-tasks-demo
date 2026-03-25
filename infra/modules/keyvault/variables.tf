@@ -19,7 +19,7 @@ variable "location" {
 }
 
 variable "tenant_id" {
-  description = "Azure AD tenant ID"
+  description = "Microsoft Entra ID tenant ID"
   type        = string
 }
 
