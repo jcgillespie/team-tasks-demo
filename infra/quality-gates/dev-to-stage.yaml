@@ -1,0 +1,39 @@
+# Quality Gate Profile: Development → Stage
+#
+# These gates are evaluated by scripts/deploy/evaluate-quality-gates.sh before
+# promotion from development to stage is permitted.
+#
+# Gate evaluation status: passed | failed | skipped | unknown
+# A promotion is blocked if any gate with `blocking: true` has status: failed
+#
+# Gate criteria authoring: see infra/QUALITY_GATES.md
+
+profile: dev-to-stage
+transition:
+  source: development
+  target: stage
+
+gates:
+  - name: validation-passed
+    description: "CI validation workflow must have passed for the artifact's source revision."
+    blocking: true
+    evidence_type: github_check
+    evidence_ref: "Validate / Backend — lint and test"
+
+  - name: frontend-tests-passed
+    description: "Frontend lint and tests must have passed for the artifact's source revision."
+    blocking: true
+    evidence_type: github_check
+    evidence_ref: "Validate / Frontend — lint and test"
+
+  - name: build-succeeded
+    description: "Container build workflow must have succeeded and published both images."
+    blocking: true
+    evidence_type: github_workflow
+    evidence_ref: "Build"
+
+  - name: dev-deployment-healthy
+    description: "API and client deployments in development must be healthy (all pods ready)."
+    blocking: true
+    evidence_type: kubernetes_rollout
+    evidence_ref: "development/teamtasks-api,development/teamtasks-client"

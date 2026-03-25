@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Node artifacts
+node_modules/
+dist/
+coverage/
+
+# Logs and temp
+*.log
+*.tmp
+
+# Secrets — never copy into image
+*.env
+.env*
+
+# IDE files
+.vscode/
+.idea/
+
+# Docs and spec files not needed for build
+../docs/
+../specs/
+../infra/
+../.github/
+../scripts/
+../tests/
+../server/
+../publish/
+../Prompts/

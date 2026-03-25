@@ -1,0 +1,27 @@
+name: Promote to Stage
+
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_id:
+        description: "Artifact ID (git SHA) to promote from development to stage"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  promote-to-stage:
+    name: Promote ${{ inputs.artifact_id }} → stage
+    uses: ./.github/workflows/promote.yml
+    with:
+      artifact_id: ${{ inputs.artifact_id }}
+      source_environment: development
+      target_environment: stage
+      quality_gate_profile: dev-to-stage
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}

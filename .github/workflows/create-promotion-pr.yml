@@ -1,0 +1,85 @@
+name: Create Promotion PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_id:
+        description: "Artifact ID (git SHA) to propose for promotion"
+        required: true
+        type: string
+      source_environment:
+        description: "Source environment"
+        required: true
+        type: choice
+        options:
+          - development
+          - stage
+      target_environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - stage
+          - production
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pr:
+    name: Create promotion PR for ${{ inputs.artifact_id }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create promotion record branch
+        run: |
+          BRANCH="promote/${{ inputs.target_environment }}/${{ inputs.artifact_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "${BRANCH}"
+
+          # Record promotion request as a marker file (auditable)
+          mkdir -p .promotions
+          cat > ".promotions/${{ inputs.artifact_id }}-to-${{ inputs.target_environment }}.json" << EOF
+          {
+            "artifact_id": "${{ inputs.artifact_id }}",
+            "source_environment": "${{ inputs.source_environment }}",
+            "target_environment": "${{ inputs.target_environment }}",
+            "requested_by": "${{ github.actor }}",
+            "requested_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow_run_id": "${{ github.run_id }}"
+          }
+          EOF
+
+          git add .promotions/
+          git commit -m "chore: promote ${{ inputs.artifact_id }} to ${{ inputs.target_environment }}"
+          git push origin "${BRANCH}"
+
+      - name: Open pull request
+        run: |
+          gh pr create \
+            --title "Promote ${{ inputs.artifact_id }} → ${{ inputs.target_environment }}" \
+            --body "## Promotion Request
+
+          **Artifact**: \`${{ inputs.artifact_id }}\`
+          **From**: ${{ inputs.source_environment }}
+          **To**: ${{ inputs.target_environment }}
+          **Requested by**: @${{ github.actor }}
+
+          ### Checklist
+          - [ ] Quality gates have been reviewed
+          - [ ] Deployment to ${{ inputs.source_environment }} was validated
+          $([ '${{ inputs.target_environment }}' = 'production' ] && echo '- [ ] Production approval obtained')
+
+          ### Promote
+          Once merged, trigger the appropriate promotion workflow:
+          - [Promote to Stage](${{ github.server_url }}/${{ github.repository }}/actions/workflows/promote-to-stage.yml)
+          - [Promote to Production](${{ github.server_url }}/${{ github.repository }}/actions/workflows/promote-to-production.yml)
+          " \
+            --base main \
+            --head "promote/${{ inputs.target_environment }}/${{ inputs.artifact_id }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

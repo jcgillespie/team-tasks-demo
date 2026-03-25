@@ -1,0 +1,21 @@
+# GitHub Actions environment configuration for STAGE
+# Set these as GitHub Actions environment variables in the repository settings.
+
+# Environment name (must match GitHub environment name)
+# ENVIRONMENT: stage
+
+# Azure credentials (set as GitHub Actions secrets)
+# AZURE_CLIENT_ID: <client-id of the GitHub Actions OIDC identity for stage>
+# AZURE_TENANT_ID: <Azure tenant ID>
+# AZURE_SUBSCRIPTION_ID: <Azure subscription ID>
+
+# Environment variables (non-sensitive)
+# ACR_NAME: <Azure Container Registry name>
+# ACR_LOGIN_SERVER: <ACR login server URL>
+# AKS_CLUSTER_NAME: <AKS cluster name for stage>
+# AKS_RESOURCE_GROUP: <AKS resource group name for stage>
+# K8S_NAMESPACE: stage
+
+# Quality gates
+# Promotions to stage require the quality gate profile: infra/quality-gates/dev-to-stage.yaml
+# QUALITY_GATE_PROFILE: dev-to-stage

@@ -1,0 +1,37 @@
+# Quality Gate Profile: Stage → Production
+#
+# These gates are evaluated by scripts/deploy/evaluate-quality-gates.sh before
+# promotion from stage to production is permitted.
+#
+# In addition to gate evaluation, production promotion requires manual approval
+# configured in the GitHub environment protection rules for the 'production' environment.
+
+profile: stage-to-production
+transition:
+  source: stage
+  target: production
+
+gates:
+  - name: stage-deployment-healthy
+    description: "API and client deployments in stage must be healthy (all pods ready)."
+    blocking: true
+    evidence_type: kubernetes_rollout
+    evidence_ref: "stage/teamtasks-api,stage/teamtasks-client"
+
+  - name: stage-api-health-check
+    description: "API health endpoint in stage must respond successfully."
+    blocking: true
+    evidence_type: http_probe
+    evidence_ref: "http://teamtasks-api-svc.stage:8080/api/tasks"
+
+  - name: dev-to-stage-gates-passed
+    description: "All dev-to-stage gates must have passed for this artifact."
+    blocking: true
+    evidence_type: quality_gate_result
+    evidence_ref: "dev-to-stage"
+
+  - name: approval
+    description: "Production deployment requires human approval (enforced by GitHub environment protection)."
+    blocking: true
+    evidence_type: github_environment_approval
+    evidence_ref: "production"

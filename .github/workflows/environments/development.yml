@@ -1,0 +1,22 @@
+# GitHub Actions environment configuration for DEVELOPMENT
+# Set these as GitHub Actions environment variables in the repository settings.
+# Reference: https://docs.github.com/en/actions/deployment/targeting-different-environments
+
+# Environment name (must match GitHub environment name)
+# ENVIRONMENT: development
+
+# Azure credentials (set as GitHub Actions secrets)
+# AZURE_CLIENT_ID: <client-id of the GitHub Actions OIDC identity>
+# AZURE_TENANT_ID: <Azure tenant ID>
+# AZURE_SUBSCRIPTION_ID: <Azure subscription ID>
+
+# Environment variables (non-sensitive, set as GitHub environment variables)
+# ACR_NAME: <Azure Container Registry name>
+# ACR_LOGIN_SERVER: <ACR login server URL, e.g. ttacrdevelopment.azurecr.io>
+# AKS_CLUSTER_NAME: <AKS cluster name>
+# AKS_RESOURCE_GROUP: <AKS resource group name>
+# K8S_NAMESPACE: development
+
+# Quality gates
+# Quality gates are not enforced for development — this is the first deployment target.
+# All builds that pass validation are automatically deployed here.

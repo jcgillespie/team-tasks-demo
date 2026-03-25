@@ -1,0 +1,29 @@
+# GitHub Actions environment configuration for PRODUCTION
+# Set these as GitHub Actions environment variables in the repository settings.
+
+# Environment name (must match GitHub environment name)
+# ENVIRONMENT: production
+
+# Protection rules (configure in GitHub repository settings):
+# - Required reviewers: Add 1+ team members as required approvers
+# - Deployment branch policy: Restrict to main branch only
+# - Wait timer: Optional delay before deployment starts (e.g. 5 minutes)
+
+# Azure credentials (set as GitHub Actions secrets)
+# AZURE_CLIENT_ID: <client-id of the GitHub Actions OIDC identity for production>
+# AZURE_TENANT_ID: <Azure tenant ID>
+# AZURE_SUBSCRIPTION_ID: <Azure subscription ID>
+
+# Environment variables (non-sensitive)
+# ACR_NAME: <Azure Container Registry name>
+# ACR_LOGIN_SERVER: <ACR login server URL>
+# AKS_CLUSTER_NAME: <AKS cluster name for production>
+# AKS_RESOURCE_GROUP: <AKS resource group name for production>
+# K8S_NAMESPACE: production
+
+# Quality gates
+# Promotions to production require the quality gate profile: infra/quality-gates/stage-to-production.yaml
+# QUALITY_GATE_PROFILE: stage-to-production
+
+# IMPORTANT: approvalRequired = true for production.
+# The GitHub environment protection rules enforce the manual approval gate.

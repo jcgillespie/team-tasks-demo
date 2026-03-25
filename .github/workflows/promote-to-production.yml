@@ -1,0 +1,30 @@
+name: Promote to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_id:
+        description: "Artifact ID (git SHA) to promote from stage to production"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  promote-to-production:
+    name: Promote ${{ inputs.artifact_id }} → production
+    uses: ./.github/workflows/promote.yml
+    with:
+      artifact_id: ${{ inputs.artifact_id }}
+      source_environment: stage
+      target_environment: production
+      quality_gate_profile: stage-to-production
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+  # Production requires manual approval (configured in GitHub environment protection rules).
+  # The workflow will pause at the 'production' environment gate until an approver reviews.

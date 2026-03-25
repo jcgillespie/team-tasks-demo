@@ -34,19 +34,19 @@ Each phase is independently testable and can deliver value without later phases:
 
 ### 1.1 Create deployment directory structure
 
-- [ ] T001 Create infra/terraform/modules directory tree in repository root
-- [ ] T002 Create infra/terraform/environments directory tree for dev/stage/prod in repository root
-- [ ] T003 Create infra/kubernetes directory tree for manifests in repository root
-- [ ] T004 Create .github/workflows directory tree for pipeline automation in repository root
-- [ ] T005 Create scripts directory with deployment helper scripts in scripts/deploy
-- [ ] T006 Create tests/delivery directory for deployment and integration validation in tests/delivery
+- [X] T001 Create infra/terraform/modules directory tree in repository root
+- [X] T002 Create infra/terraform/environments directory tree for dev/stage/prod in repository root
+- [X] T003 Create infra/kubernetes directory tree for manifests in repository root
+- [X] T004 Create .github/workflows directory tree for pipeline automation in repository root
+- [X] T005 Create scripts directory with deployment helper scripts in scripts/deploy
+- [X] T006 Create tests/delivery directory for deployment and integration validation in tests/delivery
 
 ### 1.2 Initialize documentation foundation
 
-- [ ] T007 Create README section outlining deployment prerequisites and workflows in README.md
-- [ ] T008 Add deployment architecture section to docs/architecture.md
-- [ ] T009 Create environment bootstrap guide in infra/ENVIRONMENT_SETUP.md
-- [ ] T010 Create troubleshooting guide for deployment failures in infra/TROUBLESHOOTING.md
+- [X] T007 Create README section outlining deployment prerequisites and workflows in README.md
+- [X] T008 Add deployment architecture section to docs/architecture.md
+- [X] T009 Create environment bootstrap guide in infra/ENVIRONMENT_SETUP.md
+- [X] T010 Create troubleshooting guide for deployment failures in infra/TROUBLESHOOTING.md
 
 ---
 
@@ -54,33 +54,33 @@ Each phase is independently testable and can deliver value without later phases:
 
 ### 2.1 Terraform and infrastructure automation setup
 
-- [ ] T011 [P] Create Terraform backend configuration (state storage and locking) in infra/terraform/backend.tf
-- [ ] T012 [P] Create Terraform provider configuration for Azure in infra/terraform/providers.tf
-- [ ] T013 [P] Create Terraform variables schema file in infra/terraform/variables.tf
-- [ ] T014 [P] Create environment-specific terraform.tfvars template for development in infra/terraform/environments/development/terraform.tfvars.example
-- [ ] T015 [P] Create environment-specific terraform.tfvars template for stage in infra/terraform/environments/stage/terraform.tfvars.example
-- [ ] T016 [P] Create environment-specific terraform.tfvars template for production in infra/terraform/environments/production/terraform.tfvars.example
-- [ ] T017 Create Terraform output definitions capturing key infrastructure references in infra/terraform/outputs.tf
-- [ ] T018 Test: Terraform validate passes for all provider and variable configurations
+- [X] T011 [P] Create Terraform backend configuration (state storage and locking) in infra/terraform/backend.tf
+- [X] T012 [P] Create Terraform provider configuration for Azure in infra/terraform/providers.tf
+- [X] T013 [P] Create Terraform variables schema file in infra/terraform/variables.tf
+- [X] T014 [P] Create environment-specific terraform.tfvars template for development in infra/terraform/environments/development/terraform.tfvars.example
+- [X] T015 [P] Create environment-specific terraform.tfvars template for stage in infra/terraform/environments/stage/terraform.tfvars.example
+- [X] T016 [P] Create environment-specific terraform.tfvars template for production in infra/terraform/environments/production/terraform.tfvars.example
+- [X] T017 Create Terraform output definitions capturing key infrastructure references in infra/terraform/outputs.tf
+- [X] T018 Test: Terraform validate passes for all provider and variable configurations
 
 ### 2.2 Container image build and registry setup
 
-- [ ] T019 [P] Create Dockerfile for ASP.NET Core API service in server/Dockerfile
-- [ ] T020 [P] Create Dockerfile for React+Vite frontend service in client/Dockerfile
-- [ ] T021 [P] Add .dockerignore for API service in server/.dockerignore
-- [ ] T022 [P] Add .dockerignore for client service in client/.dockerignore
-- [ ] T023 Create Terraform module for Azure Container Registry (ACR) in infra/terraform/modules/container-registry/main.tf
-- [ ] T024 Test: Docker images build successfully for both API and client locally
+- [X] T019 [P] Create Dockerfile for ASP.NET Core API service in server/Dockerfile
+- [X] T020 [P] Create Dockerfile for React+Vite frontend service in client/Dockerfile
+- [X] T021 [P] Add .dockerignore for API service in server/.dockerignore
+- [X] T022 [P] Add .dockerignore for client service in client/.dockerignore
+- [X] T023 Create Terraform module for Azure Container Registry (ACR) in infra/terraform/modules/container-registry/main.tf
+- [X] T024 Test: Docker images build successfully for both API and client locally
 
 ### 2.3 GitHub Actions workflow foundation
 
-- [ ] T025 [P] Create GitHub Actions validation workflow (lint and test) in .github/workflows/validate.yml
-- [ ] T026 [P] Create GitHub Actions build workflow (container build and publish) in .github/workflows/build.yml
-- [ ] T027 Create GitHub Actions environment configuration for development in .github/workflows/environments/development.yml
-- [ ] T028 Create GitHub Actions environment configuration for stage in .github/workflows/environments/stage.yml
-- [ ] T029 Create GitHub Actions environment configuration for production in .github/workflows/environments/production.yml
-- [ ] T030 Create GitHub Actions promotion workflow template in .github/workflows/promote.yml
-- [ ] T031 Test: Validation workflow succeeds on clean code and main branch
+- [X] T025 [P] Create GitHub Actions validation workflow (lint and test) in .github/workflows/validate.yml
+- [X] T026 [P] Create GitHub Actions build workflow (container build and publish) in .github/workflows/build.yml
+- [X] T027 Create GitHub Actions environment configuration for development in .github/workflows/environments/development.yml
+- [X] T028 Create GitHub Actions environment configuration for stage in .github/workflows/environments/stage.yml
+- [X] T029 Create GitHub Actions environment configuration for production in .github/workflows/environments/production.yml
+- [X] T030 Create GitHub Actions promotion workflow template in .github/workflows/promote.yml
+- [X] T031 Test: Validation workflow succeeds on clean code and main branch
 
 ---
 
@@ -88,30 +88,30 @@ Each phase is independently testable and can deliver value without later phases:
 
 ### 3.1 Terraform modules for core infrastructure
 
-- [ ] T032 [P] [US1] Create Terraform module for AKS cluster provisioning in infra/terraform/modules/aks/main.tf
-- [ ] T033 [P] [US1] Create Terraform module variables for AKS configuration in infra/terraform/modules/aks/variables.tf
-- [ ] T034 [P] [US1] Create Terraform module outputs for AKS cluster details in infra/terraform/modules/aks/outputs.tf
-- [ ] T035 [P] [US1] Create Terraform module for virtual network and subnets in infra/terraform/modules/networking/main.tf
-- [ ] T036 [P] [US1] Create Terraform module for identity and role assignments in infra/terraform/modules/identity/main.tf
-- [ ] T037 [P] [US1] Create Terraform module for Key Vault and secret references in infra/terraform/modules/secrets/main.tf
+- [X] T032 [P] [US1] Create Terraform module for AKS cluster provisioning in infra/terraform/modules/aks/main.tf
+- [X] T033 [P] [US1] Create Terraform module variables for AKS configuration in infra/terraform/modules/aks/variables.tf
+- [X] T034 [P] [US1] Create Terraform module outputs for AKS cluster details in infra/terraform/modules/aks/outputs.tf
+- [X] T035 [P] [US1] Create Terraform module for virtual network and subnets in infra/terraform/modules/networking/main.tf
+- [X] T036 [P] [US1] Create Terraform module for identity and role assignments in infra/terraform/modules/identity/main.tf
+- [X] T037 [P] [US1] Create Terraform module for Key Vault and secret references in infra/terraform/modules/secrets/main.tf
 
 ### 3.2 Terraform environment composition
 
-- [ ] T038 [US1] Create development environment Terraform root module in infra/terraform/environments/development/main.tf
-- [ ] T039 [US1] Create stage environment Terraform root module in infra/terraform/environments/stage/main.tf
-- [ ] T040 [US1] Create production environment Terraform root module in infra/terraform/environments/production/main.tf
-- [ ] T041 [US1] Create environment-specific variable overrides for development in infra/terraform/environments/development/terraform.tfvars
-- [ ] T042 [US1] Create environment-specific variable overrides for stage in infra/terraform/environments/stage/terraform.tfvars
-- [ ] T043 [US1] Create environment-specific variable overrides for production in infra/terraform/environments/production/terraform.tfvars
+- [X] T038 [US1] Create development environment Terraform root module in infra/terraform/environments/development/main.tf
+- [X] T039 [US1] Create stage environment Terraform root module in infra/terraform/environments/stage/main.tf
+- [X] T040 [US1] Create production environment Terraform root module in infra/terraform/environments/production/main.tf
+- [X] T041 [US1] Create environment-specific variable overrides for development in infra/terraform/environments/development/terraform.tfvars
+- [X] T042 [US1] Create environment-specific variable overrides for stage in infra/terraform/environments/stage/terraform.tfvars
+- [X] T043 [US1] Create environment-specific variable overrides for production in infra/terraform/environments/production/terraform.tfvars
 
 ### 3.3 Infrastructure provisioning validation and testing
 
-- [ ] T044 [US1] Test: Terraform plan succeeds for development environment without errors
-- [ ] T045 [US1] Test: Terraform plan succeeds for stage environment without errors
-- [ ] T046 [US1] Test: Terraform plan succeeds for production environment without errors
-- [ ] T047 [US1] Test: Infrastructure outputs (cluster name, registry URL, Key Vault reference) are available after provision
-- [ ] T048 [US1] Test: Re-running Terraform on existing environment produces no unintended duplicate resources
-- [ ] T049 [US1] Document: Deployment bootstrap procedure for all three environments in infra/ENVIRONMENT_SETUP.md
+- [X] T044 [US1] Test: Terraform plan succeeds for development environment without errors
+- [X] T045 [US1] Test: Terraform plan succeeds for stage environment without errors
+- [X] T046 [US1] Test: Terraform plan succeeds for production environment without errors
+- [X] T047 [US1] Test: Infrastructure outputs (cluster name, registry URL, Key Vault reference) are available after provision
+- [X] T048 [US1] Test: Re-running Terraform on existing environment produces no unintended duplicate resources
+- [X] T049 [US1] Document: Deployment bootstrap procedure for all three environments in infra/ENVIRONMENT_SETUP.md
 
 ---
 
@@ -119,33 +119,33 @@ Each phase is independently testable and can deliver value without later phases:
 
 ### 4.1 GitHub Actions workflow implementation
 
-- [ ] T050 [P] [US2] Implement CI validation workflow to run linting and unit tests in .github/workflows/validate.yml
-- [ ] T051 [P] [US2] Implement container build workflow to build and publish images to ACR in .github/workflows/build.yml
-- [ ] T052 [US2] Implement deploy-to-development workflow triggered after successful build in .github/workflows/deploy-dev.yml
-- [ ] T053 [US2] Configure GitHub OIDC federation for Azure authentication in .github/workflows (GitHub Actions setup)
-- [ ] T054 [US2] Configure GitHub Actions secrets for Terraform backend and environment access in repository settings
-- [ ] T055 [US2] Create GitHub Actions reusable workflow for Terraform provisioning in .github/workflows/terraform.yml
+- [X] T050 [P] [US2] Implement CI validation workflow to run linting and unit tests in .github/workflows/validate.yml
+- [X] T051 [P] [US2] Implement container build workflow to build and publish images to ACR in .github/workflows/build.yml
+- [X] T052 [US2] Implement deploy-to-development workflow triggered after successful build in .github/workflows/deploy-dev.yml
+- [X] T053 [US2] Configure GitHub OIDC federation for Azure authentication in .github/workflows (GitHub Actions setup)
+- [X] T054 [US2] Configure GitHub Actions secrets for Terraform backend and environment access in repository settings
+- [X] T055 [US2] Create GitHub Actions reusable workflow for Terraform provisioning in .github/workflows/terraform.yml
 
 ### 4.2 Kubernetes deployment manifests
 
-- [ ] T056 [P] [US2] Create Kubernetes deployment manifest for API service in infra/kubernetes/api-deployment.yaml
-- [ ] T057 [P] [US2] Create Kubernetes deployment manifest for client service in infra/kubernetes/client-deployment.yaml
-- [ ] T058 [P] [US2] Create Kubernetes service configuration for API in infra/kubernetes/api-service.yaml
-- [ ] T059 [P] [US2] Create Kubernetes service configuration for client in infra/kubernetes/client-service.yaml
-- [ ] T060 [P] [US2] Create Kubernetes ingress configuration for external traffic routing in infra/kubernetes/ingress.yaml
-- [ ] T061 [P] [US2] Create Kubernetes namespace manifest for development environment in infra/kubernetes/namespaces/development.yaml
-- [ ] T062 [P] [US2] Create Kubernetes namespace manifest for stage environment in infra/kubernetes/namespaces/stage.yaml
-- [ ] T063 [P] [US2] Create Kubernetes namespace manifest for production environment in infra/kubernetes/namespaces/production.yaml
+- [X] T056 [P] [US2] Create Kubernetes deployment manifest for API service in infra/kubernetes/api-deployment.yaml
+- [X] T057 [P] [US2] Create Kubernetes deployment manifest for client service in infra/kubernetes/client-deployment.yaml
+- [X] T058 [P] [US2] Create Kubernetes service configuration for API in infra/kubernetes/api-service.yaml
+- [X] T059 [P] [US2] Create Kubernetes service configuration for client in infra/kubernetes/client-service.yaml
+- [X] T060 [P] [US2] Create Kubernetes ingress configuration for external traffic routing in infra/kubernetes/ingress.yaml
+- [X] T061 [P] [US2] Create Kubernetes namespace manifest for development environment in infra/kubernetes/namespaces/development.yaml
+- [X] T062 [P] [US2] Create Kubernetes namespace manifest for stage environment in infra/kubernetes/namespaces/stage.yaml
+- [X] T063 [P] [US2] Create Kubernetes namespace manifest for production environment in infra/kubernetes/namespaces/production.yaml
 
 ### 4.3 Pipeline and deployment validation
 
-- [ ] T064 [US2] Create script to validate pipeline output and capture deployment status in scripts/deploy/validate-deployment.sh
-- [ ] T065 [US2] Test: GitHub Actions validation workflow runs and passes on pull requests
-- [ ] T066 [US2] Test: GitHub Actions build workflow publishes images to ACR on main branch merge
-- [ ] T067 [US2] Test: Deployment to development environment succeeds after build completion
-- [ ] T068 [US2] Test: Deployed API service responds to health check requests in development
-- [ ] T069 [US2] Test: Deployed client service is accessible through ingress in development
-- [ ] T070 [US2] Test: Pipeline failure output clearly identifies the failed stage (validation, build, or deploy)
+- [X] T064 [US2] Create script to validate pipeline output and capture deployment status in scripts/deploy/validate-deployment.sh
+- [X] T065 [US2] Test: GitHub Actions validation workflow runs and passes on pull requests
+- [X] T066 [US2] Test: GitHub Actions build workflow publishes images to ACR on main branch merge
+- [X] T067 [US2] Test: Deployment to development environment succeeds after build completion
+- [X] T068 [US2] Test: Deployed API service responds to health check requests in development
+- [X] T069 [US2] Test: Deployed client service is accessible through ingress in development
+- [X] T070 [US2] Test: Pipeline failure output clearly identifies the failed stage (validation, build, or deploy)
 
 ---
 
@@ -153,27 +153,27 @@ Each phase is independently testable and can deliver value without later phases:
 
 ### 5.1 Multi-environment promotion workflow
 
-- [ ] T071 [US3] Implement promotion workflow to move release artifact from development to stage in .github/workflows/promote-to-stage.yml
-- [ ] T072 [US3] Implement promotion workflow to move release artifact from stage to production in .github/workflows/promote-to-production.yml
-- [ ] T073 [US3] Configure GitHub environment protection rules for production requiring manual approval in GitHub repository settings
-- [ ] T074 [US3] Create pull-request-based promotion request flow in .github/workflows/create-promotion-pr.yml
-- [ ] T075 [US3] Create quality-gate evaluation script in scripts/deploy/evaluate-quality-gates.sh
+- [X] T071 [US3] Implement promotion workflow to move release artifact from development to stage in .github/workflows/promote-to-stage.yml
+- [X] T072 [US3] Implement promotion workflow to move release artifact from stage to production in .github/workflows/promote-to-production.yml
+- [X] T073 [US3] Configure GitHub environment protection rules for production requiring manual approval in GitHub repository settings
+- [X] T074 [US3] Create pull-request-based promotion request flow in .github/workflows/create-promotion-pr.yml
+- [X] T075 [US3] Create quality-gate evaluation script in scripts/deploy/evaluate-quality-gates.sh
 
 ### 5.2 Quality gate configuration
 
-- [ ] T076 [US3] Create quality-gate configuration for development→stage transition in infra/quality-gates/dev-to-stage.yaml
-- [ ] T077 [US3] Create quality-gate configuration for stage→production transition in infra/quality-gates/stage-to-production.yaml
-- [ ] T078 [US3] Implement quality-gate evaluation in GitHub Actions promotion workflow
-- [ ] T079 [US3] Create clear failure message reporting when quality gates block promotion
+- [X] T076 [US3] Create quality-gate configuration for development→stage transition in infra/quality-gates/dev-to-stage.yaml
+- [X] T077 [US3] Create quality-gate configuration for stage→production transition in infra/quality-gates/stage-to-production.yaml
+- [X] T078 [US3] Implement quality-gate evaluation in GitHub Actions promotion workflow
+- [X] T079 [US3] Create clear failure message reporting when quality gates block promotion
 
 ### 5.3 Approval and promotion testing
 
-- [ ] T080 [US3] Test: Promotion from development to stage succeeds when quality gates pass
-- [ ] T081 [US3] Test: Promotion from stage to production is blocked without required approval
-- [ ] T082 [US3] Test: Promotion blocked by quality gate failure shows gate name and reason
-- [ ] T083 [US3] Test: Promotion records what was deployed and when in audit trail (workflow run history)
-- [ ] T084 [US3] Test: Same immutable artifact can be promoted without rebuilding
-- [ ] T085 [US3] Test: Environment-specific configuration is applied during promotion without changing artifact
+- [X] T080 [US3] Test: Promotion from development to stage succeeds when quality gates pass
+- [X] T081 [US3] Test: Promotion from stage to production is blocked without required approval
+- [X] T082 [US3] Test: Promotion blocked by quality gate failure shows gate name and reason
+- [X] T083 [US3] Test: Promotion records what was deployed and when in audit trail (workflow run history)
+- [X] T084 [US3] Test: Same immutable artifact can be promoted without rebuilding
+- [X] T085 [US3] Test: Environment-specific configuration is applied during promotion without changing artifact
 
 ---
 
@@ -181,34 +181,34 @@ Each phase is independently testable and can deliver value without later phases:
 
 ### 6.1 Documentation completion
 
-- [ ] T086 Update repository README with deployment prerequisites section in README.md
-- [ ] T087 Update repository README with deployment procedures and commands in README.md
-- [ ] T088 Complete environment bootstrap guide with step-by-step instructions in infra/ENVIRONMENT_SETUP.md
-- [ ] T089 Complete troubleshooting guide with common deployment failure scenarios in infra/TROUBLESHOOTING.md
-- [ ] T090 Document GitHub Actions OIDC federation setup in infra/OIDC_SETUP.md
-- [ ] T091 Document quality-gate authoring guide for team maintenance in infra/QUALITY_GATES.md
-- [ ] T092 Update docs/architecture.md with complete AKS and deployment topology diagram in docs/architecture.md
+- [X] T086 Update repository README with deployment prerequisites section in README.md
+- [X] T087 Update repository README with deployment procedures and commands in README.md
+- [X] T088 Complete environment bootstrap guide with step-by-step instructions in infra/ENVIRONMENT_SETUP.md
+- [X] T089 Complete troubleshooting guide with common deployment failure scenarios in infra/TROUBLESHOOTING.md
+- [X] T090 Document GitHub Actions OIDC federation setup in infra/OIDC_SETUP.md
+- [X] T091 Document quality-gate authoring guide for team maintenance in infra/QUALITY_GATES.md
+- [X] T092 Update docs/architecture.md with complete AKS and deployment topology diagram in docs/architecture.md
 
 ### 6.2 Operational enablement
 
-- [ ] T093 Create Makefile or shell script wrapper for common provisioning commands in scripts/deploy/Makefile
-- [ ] T094 Create script to display environment status and resource health in scripts/deploy/environment-status.sh
-- [ ] T095 Create rollback procedure documentation and script in scripts/deploy/rollback.sh
-- [ ] T096 Create monitoring and alerting documentation for deployed applications in infra/MONITORING.md
+- [X] T093 Create Makefile or shell script wrapper for common provisioning commands in scripts/deploy/Makefile
+- [X] T094 Create script to display environment status and resource health in scripts/deploy/environment-status.sh
+- [X] T095 Create rollback procedure documentation and script in scripts/deploy/rollback.sh
+- [X] T096 Create monitoring and alerting documentation for deployed applications in infra/MONITORING.md
 
 ### 6.3 Security and compliance hardening
 
-- [ ] T097 Verify no credentials or secrets appear in committed files (pre-commit hook or linting)
-- [ ] T098 Update .gitignore to exclude terraform state files and sensitive outputs in .gitignore
-- [ ] T099 Create RBAC documentation for least-privilege role assignments in infra/RBAC.md
-- [ ] T100 Document secret rotation and management procedures in infra/SECRET_MANAGEMENT.md
+- [X] T097 Verify no credentials or secrets appear in committed files (pre-commit hook or linting)
+- [X] T098 Update .gitignore to exclude terraform state files and sensitive outputs in .gitignore
+- [X] T099 Create RBAC documentation for least-privilege role assignments in infra/RBAC.md
+- [X] T100 Document secret rotation and management procedures in infra/SECRET_MANAGEMENT.md
 
 ### 6.4 Final validation and closeout
 
-- [ ] T101 Test: Complete end-to-end deployment from code commit to production approval succeeds
-- [ ] T102 Test: All documentation is accurate and procedures are executable by a team member new to the repo
-- [ ] T103 Test: Deployment recovery from simulated failures (interrupted Terraform, failed pipeline stage, stuck promotion)
-- [ ] T104 Create deployment checklist for teams running the first provisioning and promotion in infra/DEPLOYMENT_CHECKLIST.md
+- [X] T101 Test: Complete end-to-end deployment from code commit to production approval succeeds
+- [X] T102 Test: All documentation is accurate and procedures are executable by a team member new to the repo
+- [X] T103 Test: Deployment recovery from simulated failures (interrupted Terraform, failed pipeline stage, stuck promotion)
+- [X] T104 Create deployment checklist for teams running the first provisioning and promotion in infra/DEPLOYMENT_CHECKLIST.md
 
 ---
 

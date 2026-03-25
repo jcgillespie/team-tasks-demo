@@ -1,0 +1,102 @@
+name: Validate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  backend-test:
+    name: Backend — lint and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore TeamTasks.slnx
+
+      - name: Build
+        run: dotnet build TeamTasks.slnx --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test TeamTasks.slnx --no-build --configuration Release --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Backend Tests
+          path: TestResults/*.trx
+          reporter: dotnet-trx
+
+  frontend-test:
+    name: Frontend — lint and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Install dependencies
+        working-directory: client
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        working-directory: client
+        run: pnpm lint
+
+      - name: Test
+        working-directory: client
+        run: pnpm test
+
+  terraform-validate:
+    name: Terraform — validate all configurations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~1.6"
+
+      - name: Terraform format check
+        working-directory: infra/terraform
+        run: terraform fmt -check -recursive
+
+      - name: Init and validate (development)
+        working-directory: infra/terraform/environments/development
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      - name: Init and validate (stage)
+        working-directory: infra/terraform/environments/stage
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      - name: Init and validate (production)
+        working-directory: infra/terraform/environments/production
+        run: |
+          terraform init -backend=false
+          terraform validate

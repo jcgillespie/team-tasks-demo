@@ -1,0 +1,31 @@
+# Development environment variable overrides
+# Copy this file to terraform.tfvars and fill in your values.
+# terraform.tfvars is excluded from source control — never commit it.
+
+subscription_id = "<your-azure-subscription-id>"
+environment     = "development"
+location        = "eastus2"
+name_prefix     = "tt"
+
+github_org  = "<your-github-org-or-username>"
+github_repo = "team-tasks-demo"
+
+# AKS — smaller node pool for development
+aks_node_count   = 2
+aks_node_vm_size = "Standard_D2s_v3"
+
+# Networking
+vnet_address_space = ["10.10.0.0/16"]
+aks_subnet_cidr    = "10.10.1.0/24"
+
+# Container Registry — Standard SKU for all environments
+acr_sku = "Standard"
+
+# Key Vault
+key_vault_sku = "standard"
+
+tags = {
+  environment = "development"
+  project     = "team-tasks"
+  managed_by  = "terraform"
+}

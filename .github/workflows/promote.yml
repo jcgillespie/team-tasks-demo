@@ -1,0 +1,96 @@
+name: Promote
+
+on:
+  workflow_call:
+    inputs:
+      artifact_id:
+        description: "Immutable artifact ID (git SHA) to promote"
+        required: true
+        type: string
+      source_environment:
+        description: "Source environment"
+        required: true
+        type: string
+      target_environment:
+        description: "Target environment"
+        required: true
+        type: string
+      quality_gate_profile:
+        description: "Quality gate profile name (matches infra/quality-gates/*.yaml)"
+        required: false
+        type: string
+        default: ""
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+    outputs:
+      promotion_status:
+        description: "Outcome of the promotion (success, failed, blocked)"
+        value: ${{ jobs.promote.outputs.status }}
+
+jobs:
+  promote:
+    name: Promote ${{ inputs.artifact_id }} → ${{ inputs.target_environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target_environment }}
+    outputs:
+      status: ${{ steps.result.outputs.status }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Evaluate quality gates
+        id: gates
+        if: inputs.quality_gate_profile != ''
+        run: |
+          bash scripts/deploy/evaluate-quality-gates.sh \
+            "${{ inputs.quality_gate_profile }}" \
+            "${{ inputs.artifact_id }}" \
+            "${{ inputs.source_environment }}"
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get AKS credentials
+        run: |
+          az aks get-credentials \
+            --name "${{ vars.AKS_CLUSTER_NAME }}" \
+            --resource-group "${{ vars.AKS_RESOURCE_GROUP }}" \
+            --overwrite-existing
+
+      - name: Deploy to ${{ inputs.target_environment }}
+        run: |
+          API_IMAGE="${{ vars.ACR_LOGIN_SERVER }}/teamtasks/api:${{ inputs.artifact_id }}"
+          CLIENT_IMAGE="${{ vars.ACR_LOGIN_SERVER }}/teamtasks/client:${{ inputs.artifact_id }}"
+          NAMESPACE="${{ inputs.target_environment }}"
+
+          kubectl set image deployment/teamtasks-api \
+            teamtasks-api="${API_IMAGE}" \
+            -n "${NAMESPACE}"
+
+          kubectl set image deployment/teamtasks-client \
+            teamtasks-client="${CLIENT_IMAGE}" \
+            -n "${NAMESPACE}"
+
+          kubectl rollout status deployment/teamtasks-api -n "${NAMESPACE}" --timeout=5m
+          kubectl rollout status deployment/teamtasks-client -n "${NAMESPACE}" --timeout=5m
+
+      - name: Record promotion result
+        id: result
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "status=success" >> "$GITHUB_OUTPUT"
+            echo "✅ Promoted ${{ inputs.artifact_id }} to ${{ inputs.target_environment }}"
+          else
+            echo "status=failed" >> "$GITHUB_OUTPUT"
+            echo "❌ Promotion of ${{ inputs.artifact_id }} to ${{ inputs.target_environment }} failed"
+          fi

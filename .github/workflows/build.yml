@@ -1,0 +1,82 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment for image tagging"
+        required: false
+        default: "development"
+
+permissions:
+  contents: read
+  id-token: write  # Required for OIDC authentication to Azure
+
+jobs:
+  build-and-publish:
+    name: Build and publish container images
+    runs-on: ubuntu-latest
+    environment: development
+    outputs:
+      artifact_id: ${{ steps.artifact.outputs.artifact_id }}
+      api_image: ${{ steps.artifact.outputs.api_image }}
+      client_image: ${{ steps.artifact.outputs.client_image }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate artifact ID
+        id: artifact
+        run: |
+          ARTIFACT_ID="${{ github.sha }}"
+          ACR_SERVER="${{ vars.ACR_LOGIN_SERVER }}"
+          echo "artifact_id=${ARTIFACT_ID}" >> "$GITHUB_OUTPUT"
+          echo "api_image=${ACR_SERVER}/teamtasks/api:${ARTIFACT_ID}" >> "$GITHUB_OUTPUT"
+          echo "client_image=${ACR_SERVER}/teamtasks/client:${ARTIFACT_ID}" >> "$GITHUB_OUTPUT"
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: az acr login --name ${{ vars.ACR_NAME }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: server/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.artifact.outputs.api_image }}
+            ${{ vars.ACR_LOGIN_SERVER }}/teamtasks/api:latest
+          cache-from: type=registry,ref=${{ vars.ACR_LOGIN_SERVER }}/teamtasks/api:buildcache
+          cache-to: type=registry,ref=${{ vars.ACR_LOGIN_SERVER }}/teamtasks/api:buildcache,mode=max
+
+      - name: Build and push client image
+        uses: docker/build-push-action@v5
+        with:
+          context: client
+          file: client/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.artifact.outputs.client_image }}
+            ${{ vars.ACR_LOGIN_SERVER }}/teamtasks/client:latest
+          cache-from: type=registry,ref=${{ vars.ACR_LOGIN_SERVER }}/teamtasks/client:buildcache
+          cache-to: type=registry,ref=${{ vars.ACR_LOGIN_SERVER }}/teamtasks/client:buildcache,mode=max
+
+      - name: Record artifact manifest
+        run: |
+          echo "Artifact: ${{ steps.artifact.outputs.artifact_id }}"
+          echo "API image: ${{ steps.artifact.outputs.api_image }}"
+          echo "Client image: ${{ steps.artifact.outputs.client_image }}"
+          echo "Source: ${{ github.sha }}"
+          echo "Triggered by: ${{ github.event_name }}"

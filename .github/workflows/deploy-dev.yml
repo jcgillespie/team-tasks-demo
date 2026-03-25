@@ -1,0 +1,70 @@
+name: Deploy to Development
+
+on:
+  workflow_run:
+    workflows: [Build]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      artifact_id:
+        description: "Artifact ID (git SHA) to deploy"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    name: Deploy to development
+    runs-on: ubuntu-latest
+    environment: development
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve artifact ID
+        id: artifact
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "artifact_id=${{ inputs.artifact_id }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "artifact_id=${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get AKS credentials
+        run: |
+          az aks get-credentials \
+            --name "${{ vars.AKS_CLUSTER_NAME }}" \
+            --resource-group "${{ vars.AKS_RESOURCE_GROUP }}" \
+            --overwrite-existing
+
+      - name: Apply Kubernetes namespace
+        run: kubectl apply -f infra/kubernetes/namespaces/development.yaml
+
+      - name: Deploy API
+        run: |
+          API_IMAGE="${{ vars.ACR_LOGIN_SERVER }}/teamtasks/api:${{ steps.artifact.outputs.artifact_id }}"
+          kubectl set image deployment/teamtasks-api teamtasks-api="${API_IMAGE}" -n development
+          kubectl rollout status deployment/teamtasks-api -n development --timeout=5m
+
+      - name: Deploy client
+        run: |
+          CLIENT_IMAGE="${{ vars.ACR_LOGIN_SERVER }}/teamtasks/client:${{ steps.artifact.outputs.artifact_id }}"
+          kubectl set image deployment/teamtasks-client teamtasks-client="${CLIENT_IMAGE}" -n development
+          kubectl rollout status deployment/teamtasks-client -n development --timeout=5m
+
+      - name: Validate deployment
+        run: |
+          bash scripts/deploy/validate-deployment.sh development \
+            "${{ steps.artifact.outputs.artifact_id }}"

@@ -58,6 +58,56 @@ cd client
 pnpm dev
 ```
 
+---
+
+## Deployment Prerequisites
+
+> For full deployment setup, see [`infra/ENVIRONMENT_SETUP.md`](infra/ENVIRONMENT_SETUP.md).
+
+### Required Tools
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| Terraform | >= 1.6 | Azure infrastructure provisioning |
+| Docker | >= 24 | Container image builds |
+| Azure CLI (`az`) | >= 2.55 | Azure access and OIDC setup |
+| `kubectl` | >= 1.28 | Kubernetes cluster interaction |
+| `pnpm` | >= 10 | Frontend package management |
+| .NET SDK | 10 | Backend build and test |
+
+### Required Accounts / Access
+
+- Azure subscription with permissions to create AKS, ACR, VNet, Key Vault, and identity resources
+- GitHub repository admin access (for Actions environments, protection rules, and OIDC federation)
+
+## Deployment Workflows Overview
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `validate.yml` | Pull request | Lint and test all code |
+| `build.yml` | Push to `main` | Build and publish container images to ACR |
+| `deploy-dev.yml` | After build | Auto-deploy latest artifact to development |
+| `promote-to-stage.yml` | Manual / quality gate | Promote artifact from development → stage |
+| `promote-to-production.yml` | Manual + approval | Promote artifact from stage → production |
+
+## Deployment Quick Reference
+
+```bash
+# Provision a new environment (e.g., development)
+cd infra/terraform/environments/development
+terraform init -backend-config=../../backend.tf
+terraform plan -out=tfplan
+terraform apply tfplan
+
+# Check environment status
+bash scripts/deploy/environment-status.sh development
+
+# Rollback to a previous artifact
+bash scripts/deploy/rollback.sh development <artifact-id>
+```
+
+Full procedures: [`infra/ENVIRONMENT_SETUP.md`](infra/ENVIRONMENT_SETUP.md) | [`infra/TROUBLESHOOTING.md`](infra/TROUBLESHOOTING.md)
+
 Frontend URL:
 
 - `http://localhost:5173`

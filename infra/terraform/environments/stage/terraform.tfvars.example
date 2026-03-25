@@ -1,0 +1,31 @@
+# Stage environment variable overrides
+# Copy this file to terraform.tfvars and fill in your values.
+# terraform.tfvars is excluded from source control — never commit it.
+
+subscription_id = "<your-azure-subscription-id>"
+environment     = "stage"
+location        = "eastus2"
+name_prefix     = "tt"
+
+github_org  = "<your-github-org-or-username>"
+github_repo = "team-tasks-demo"
+
+# AKS — slightly larger node pool for realistic stage testing
+aks_node_count   = 2
+aks_node_vm_size = "Standard_D2s_v3"
+
+# Networking
+vnet_address_space = ["10.20.0.0/16"]
+aks_subnet_cidr    = "10.20.1.0/24"
+
+# Container Registry — shared ACR from development, specify the name_prefix only
+acr_sku = "Standard"
+
+# Key Vault
+key_vault_sku = "standard"
+
+tags = {
+  environment = "stage"
+  project     = "team-tasks"
+  managed_by  = "terraform"
+}

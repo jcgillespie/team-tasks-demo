@@ -18,3 +18,31 @@
 # IDE and test output
 .vscode/
 coverage/
+
+# Terraform state — never commit these
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform/
+**/.terraform.lock.hcl
+
+# Terraform variable files with real values — use *.tfvars.example for templates
+**/terraform.tfvars
+!**/*.tfvars.example
+
+# Terraform plan outputs
+**/tfplan
+**/*.tfplan
+
+# Docker credentials
+.docker/
+
+# Environment variable files with secrets
+.env
+.env.*
+!.env.example
+
+# Promotion audit records (generated at runtime)
+.promotions/
+
+# Azure CLI token cache
+.azure/

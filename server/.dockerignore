@@ -1,0 +1,37 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Build outputs (not needed in image)
+**/bin/
+**/obj/
+**/TestResults/
+
+# IDE files
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Logs and temp
+*.log
+*.tmp
+
+# Secrets — never copy into image
+*.env
+.env*
+**/terraform.tfvars
+**/terraform.tfstate*
+
+# Docs and spec files
+docs/
+specs/
+infra/
+.github/
+scripts/
+tests/
+Prompts/
+
+# Client (built separately)
+client/

@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: teamtasks-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+spec:
+  rules:
+    - http:
+        paths:
+          # API routes — proxied to the API service
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: teamtasks-api-svc
+                port:
+                  number: 8080
+          # All other routes — proxied to the client service (which handles SPA fallback)
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: teamtasks-client-svc
+                port:
+                  number: 8080
