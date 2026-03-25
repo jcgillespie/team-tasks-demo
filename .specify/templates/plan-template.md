@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **I. Code Quality**: Single-responsibility design confirmed; no magic numbers or ad-hoc inline logic planned.
+- [ ] **II. TDD**: Test tasks are listed before implementation tasks; coverage target (≥ 80%) is achievable.
+- [ ] **III. Clean Documentation**: OpenAPI annotations, README, and architecture docs will be updated in this PR.
+- [ ] **IV. UX Consistency**: Loading, error, and empty states handled; API response shapes follow existing conventions.
+- [ ] **V. Simplicity**: No speculative features/abstractions; new dependencies justified (or none added).
 
 ## Project Structure
 
