@@ -11,8 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? "Data Source=teamtasks.db";
-    options.UseSqlite(connectionString);
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    options.UseSqlServer(connectionString);
 });
 
 builder.Services.AddScoped<ITaskService, TaskService>();
