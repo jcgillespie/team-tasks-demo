@@ -7,22 +7,22 @@ source:
   - 01-03-SUMMARY.md
   - 01-04-SUMMARY.md
 started: 2026-03-25T15:00:00Z
-updated: 2026-03-25T15:05:00Z
+updated: 2026-03-25T15:12:00Z
 ---
 
 ## Current Test
 
-[testing paused — 5 items outstanding]
+[testing paused — 3 items outstanding]
 
 ## Tests
 
 ### 1. Bootstrap Script Readiness
 expected: Opening the bootstrap script shows a one-shot Azure CLI flow that creates the remote state resource group, storage account, and container, and the file clearly documents running it before the first `tofu init`.
-result: [pending]
+result: pass
 
 ### 2. Module Library Structure
 expected: The `infra/modules/` directory contains the six expected modules (`resource-group`, `identity`, `acr`, `keyvault`, `sql`, `app`), and each module has `main.tf`, `variables.tf`, and `outputs.tf`.
-result: [pending]
+result: pass
 
 ### 3. SQL Server Migration Configuration
 expected: The API startup uses `UseSqlServer`, the SQL Server EF package is present, `appsettings.json` does not contain a production connection string, and local development configuration uses a separate development connection string.
@@ -39,9 +39,9 @@ result: [pending]
 ## Summary
 
 total: 5
-passed: 0
+passed: 2
 issues: 0
-pending: 5
+pending: 3
 skipped: 0
 blocked: 0
 
