@@ -15,11 +15,14 @@
 
 **Requirements:** INFRA-01, INFRA-02, INFRA-03, INFRA-04, INFRA-05, INFRA-06, INFRA-07, SEC-01, SEC-02, SEC-03, SEC-04
 
-**Plans:** TBD plans
+**Plans:** 4 plans
 **Status:** not started
 
 Plans:
-- [ ] TBD — discover and plan `infra/` directory structure, OpenTofu module layout, and resource choices
+- [ ] 01-01-PLAN.md — Bootstrap script + OpenTofu module library (Wave 1)
+- [ ] 01-02-PLAN.md — Backend migration: SQLite → Azure SQL (Wave 1)
+- [ ] 01-03-PLAN.md — Env configs (dev+prod) + OIDC federation (Wave 2)
+- [ ] 01-04-PLAN.md — Verification checkpoint (Wave 3)
 
 ---
 
