@@ -5,6 +5,9 @@
 # Node artifacts
 **/node_modules/
 **/dist/
+# pnpm: project-local store (e.g. store-dir next to repo) — never commit
+.pnpm-store/
+pnpm-debug.log*
 
 # Logs and temp files
 *.log
