@@ -18,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<ITaskService, TaskService>();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-    ?? ["http://localhost:5173"];
+    ?? ["http://127.0.0.1:5173", "http://localhost:5173"];
 
 builder.Services.AddCors(options =>
 {
@@ -45,8 +45,8 @@ using (var scope = app.Services.CreateScope())
     await DbInitializer.SeedAsync(dbContext);
 }
 
-app.UseHttpsRedirection();
 app.UseCors("ClientCors");
+app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
